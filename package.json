@@ -1,0 +1,12 @@
+{
+  "name": "sistema-aluguel-de-carros",
+  "version": "1.0.0",
+  "description": "Laboratório 02 (DIW) - Sistema de Aluguel de Carros com HTML5, CSS3, JavaScript, Bootstrap 5 e JSON Server",
+  "private": true,
+  "scripts": {
+    "start": "json-server --watch db.json --port 3000 --static ./src"
+  },
+  "devDependencies": {
+    "json-server": "^0.17.4"
+  }
+}

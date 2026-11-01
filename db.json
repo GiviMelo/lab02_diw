@@ -1,0 +1,309 @@
+{
+  "usuarios": [
+    {
+      "id": 1,
+      "email": "cliente@teste.com",
+      "senha": "123456",
+      "perfil": "cliente",
+      "perfilId": 1
+    },
+    {
+      "id": 2,
+      "email": "banco@teste.com",
+      "senha": "123456",
+      "perfil": "agente",
+      "perfilId": 1
+    },
+    {
+      "id": 3,
+      "email": "empresa@teste.com",
+      "senha": "123456",
+      "perfil": "agente",
+      "perfilId": 2
+    },
+    {
+      "id": 4,
+      "email": "joao@teste.com",
+      "senha": "123456",
+      "perfil": "cliente",
+      "perfilId": 2
+    },
+    {
+      "id": 5,
+      "email": "ana@teste.com",
+      "senha": "123456",
+      "perfil": "cliente",
+      "perfilId": 3
+    }
+  ],
+  "clientes": [
+    {
+      "id": 1,
+      "nome": "Maria Souza",
+      "rg": "MG-12.345.678",
+      "cpf": "529.982.247-25",
+      "endereco": "Rua das Flores, 100 - Belo Horizonte/MG",
+      "profissao": "Engenheira",
+      "membroDesde": "09/2026",
+      "rendimentos": [
+        {
+          "entidadeEmpregadora": "Tech Minas Ltda",
+          "valor": 8500
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "nome": "João Pereira",
+      "rg": "MG-98.765.432",
+      "cpf": "111.444.777-35",
+      "endereco": "Av. Afonso Pena, 800 - Belo Horizonte/MG",
+      "profissao": "Designer",
+      "membroDesde": "10/2026",
+      "rendimentos": [
+        {
+          "entidadeEmpregadora": "Estúdio Alfa",
+          "valor": 5200
+        },
+        {
+          "entidadeEmpregadora": "Freelance",
+          "valor": 1800
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "nome": "Ana Lima",
+      "rg": "MG-45.678.901",
+      "cpf": "390.533.447-05",
+      "endereco": "Rua da Bahia, 45 - Contagem/MG",
+      "profissao": "Professora",
+      "membroDesde": "10/2026",
+      "rendimentos": [
+        {
+          "entidadeEmpregadora": "Colégio Horizonte",
+          "valor": 4300
+        }
+      ]
+    }
+  ],
+  "agentes": [
+    {
+      "id": 1,
+      "nome": "Banco Mineiro",
+      "tipo": "banco",
+      "cnpj": "12.345.678/0001-95"
+    },
+    {
+      "id": 2,
+      "nome": "Locadora Central",
+      "tipo": "empresa",
+      "cnpj": "98.765.432/0001-98"
+    }
+  ],
+  "automoveis": [
+    {
+      "id": 1,
+      "matricula": "MAT-0001",
+      "ano": 2023,
+      "marca": "Fiat",
+      "modelo": "Argo",
+      "placa": "ABC1D23",
+      "forma": "hatch",
+      "cor": "#E8ECF1",
+      "proprietarioTipo": "empresa",
+      "proprietarioId": 2
+    },
+    {
+      "id": 2,
+      "matricula": "MAT-0002",
+      "ano": 2024,
+      "marca": "Volkswagen",
+      "modelo": "Polo",
+      "placa": "DEF4G56",
+      "forma": "hatch",
+      "cor": "#1F4FB5",
+      "proprietarioTipo": "banco",
+      "proprietarioId": 1
+    },
+    {
+      "id": 3,
+      "matricula": "MAT-0003",
+      "ano": 2023,
+      "marca": "Chevrolet",
+      "modelo": "Onix Plus",
+      "placa": "GHI7J89",
+      "forma": "sedan",
+      "cor": "#C0392B",
+      "proprietarioTipo": "empresa",
+      "proprietarioId": 2
+    },
+    {
+      "id": 4,
+      "matricula": "MAT-0004",
+      "ano": 2024,
+      "marca": "Hyundai",
+      "modelo": "HB20",
+      "placa": "JKL0M12",
+      "forma": "hatch",
+      "cor": "#F2A93B",
+      "proprietarioTipo": "banco",
+      "proprietarioId": 1
+    },
+    {
+      "id": 5,
+      "matricula": "MAT-0005",
+      "ano": 2024,
+      "marca": "Toyota",
+      "modelo": "Corolla",
+      "placa": "NOP3Q45",
+      "forma": "sedan",
+      "cor": "#3B4656",
+      "proprietarioTipo": "cliente",
+      "proprietarioId": 2
+    },
+    {
+      "id": 6,
+      "matricula": "MAT-0006",
+      "ano": 2023,
+      "marca": "Jeep",
+      "modelo": "Renegade",
+      "placa": "RST6U78",
+      "forma": "suv",
+      "cor": "#2FB5A0",
+      "proprietarioTipo": "empresa",
+      "proprietarioId": 2
+    },
+    {
+      "id": 7,
+      "matricula": "MAT-0007",
+      "ano": 2024,
+      "marca": "Fiat",
+      "modelo": "Strada",
+      "placa": "VWX9Y01",
+      "forma": "picape",
+      "cor": "#8A97A8",
+      "proprietarioTipo": "empresa",
+      "proprietarioId": 2
+    }
+  ],
+  "pedidos": [
+    {
+      "id": 1,
+      "clienteId": 1,
+      "automovelId": 1,
+      "dataInicio": "2026-11-05",
+      "dataFim": "2026-11-08",
+      "observacoes": "",
+      "dataCriacao": "2026-10-30T13:00:00.000Z",
+      "status": "Em análise",
+      "avaliacoes": [],
+      "historico": [
+        {
+          "data": "2026-10-30T13:00:00.000Z",
+          "autor": "Maria Souza",
+          "acao": "Pedido enviado"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "clienteId": 1,
+      "automovelId": 2,
+      "dataInicio": "2026-11-12",
+      "dataFim": "2026-11-19",
+      "observacoes": "",
+      "dataCriacao": "2026-10-28T13:00:00.000Z",
+      "status": "Aprovado financeiramente",
+      "avaliacoes": [
+        {
+          "agenteId": 1,
+          "agenteNome": "Banco Mineiro",
+          "aprovado": true,
+          "parecer": "Renda compatível",
+          "data": "2026-10-29T13:00:00.000Z"
+        }
+      ],
+      "historico": [
+        {
+          "data": "2026-10-28T13:00:00.000Z",
+          "autor": "Maria Souza",
+          "acao": "Pedido enviado"
+        },
+        {
+          "data": "2026-10-29T13:00:00.000Z",
+          "autor": "Banco Mineiro",
+          "acao": "Análise financeira aprovada",
+          "detalhe": "Parecer: Renda compatível"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "clienteId": 1,
+      "automovelId": 3,
+      "dataInicio": "2026-10-01",
+      "dataFim": "2026-10-05",
+      "observacoes": "",
+      "dataCriacao": "2026-09-20T13:00:00.000Z",
+      "status": "Contrato executado",
+      "avaliacoes": [
+        {
+          "agenteId": 2,
+          "agenteNome": "Locadora Central",
+          "aprovado": true,
+          "parecer": "Aprovado",
+          "data": "2026-09-22T13:00:00.000Z"
+        }
+      ],
+      "contratoId": 1,
+      "historico": [
+        {
+          "data": "2026-09-20T13:00:00.000Z",
+          "autor": "Maria Souza",
+          "acao": "Pedido enviado"
+        },
+        {
+          "data": "2026-09-22T13:00:00.000Z",
+          "autor": "Locadora Central",
+          "acao": "Análise financeira aprovada",
+          "detalhe": "Parecer: Aprovado"
+        },
+        {
+          "data": "2026-09-24T13:00:00.000Z",
+          "autor": "Locadora Central",
+          "acao": "Contrato executado"
+        }
+      ]
+    },
+    {
+      "clienteId": 1,
+      "automovelId": 6,
+      "dataInicio": "2026-11-02",
+      "dataFim": "2026-11-06",
+      "observacoes": "",
+      "dataCriacao": "2026-11-01T18:36:43.436Z",
+      "status": "Em análise",
+      "avaliacoes": [],
+      "historico": [
+        {
+          "data": "2026-11-01T18:36:43.436Z",
+          "autor": "Maria Souza",
+          "acao": "Pedido enviado"
+        }
+      ],
+      "id": 4
+    }
+  ],
+  "contratos": [
+    {
+      "id": 1,
+      "pedidoId": 3,
+      "agenteId": 2,
+      "tipoPropriedade": "empresa",
+      "proprietarioId": 2,
+      "dataExecucao": "2026-09-24T13:00:00.000Z"
+    }
+  ],
+  "creditos": []
+}
