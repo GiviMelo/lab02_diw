@@ -53,10 +53,11 @@ A interface segue o protótipo **Rota Aluguel**: barra lateral escura, cards com
 - 📝 **Pedidos**: escolher um carro livre no período, ver o resumo com a duração, editar enquanto "Em análise", cancelar e acompanhar o histórico.
 - 📊 **Painel de pedidos**: indicadores por status, filtro por status e tabela.
 - 💰 **Avaliação financeira**: o agente vê a renda declarada e aprova ou reprova com parecer obrigatório.
-- 📄 **Execução de contrato**: define a propriedade do automóvel (cliente, empresa ou banco). O banco informa o crédito e vê a parcela estimada pela Tabela Price.
+- 📄 **Execução de contrato**: define a propriedade do automóvel (cliente, empresa ou banco). O banco pode vincular um contrato de crédito (opcional) e vê a parcela estimada pela Tabela Price.
 - 👤 **CRUD de clientes** (agente) e **perfil do cliente** com a carteira do locatário: progresso do perfil, renda, pedidos, contratos e dias na estrada.
 - 🏦 **Perfil do agente** com a credencial: frota própria, pedidos, contratos e clientes.
 - 🚗 **CRUD de automóveis** com prévia ao vivo da carroceria e da cor.
+- 📱 **Responsivo**: no celular a barra lateral vira um menu deslizante (Offcanvas).
 
 ### Fluxo de status do pedido
 
@@ -69,7 +70,9 @@ A interface segue o protótipo **Rota Aluguel**: barra lateral escura, cards com
 | Camada | Tecnologia |
 |--------|-----------|
 | Estrutura e lógica | HTML5, CSS3, JavaScript (módulos ES) |
-| Interface | Bootstrap 5.3.3 (grade, utilitários, modal) + tema próprio `css/rota.css` |
+| Interface | Bootstrap 5.3.3 com tema próprio (`css/rota.css`, que só ajusta as variáveis `--bs-*`) |
+| Componentes Bootstrap usados | `btn` e botões de alternância, `card`, `form-control`, `form-select`, `form-label`, `form-switch`, `table`, `badge`, `alert`, `nav-pills`, grid `row`/`col`, Toast, Modal, Collapse e Offcanvas |
+| Modelagem | PlantUML (v4) e Mermaid (v1–v3) |
 | Tipografia | Manrope (Google Fonts) |
 | API e persistência | JSON Server 0.17.4 (API REST simulada a partir do `db.json`) |
 | Comunicação | Fetch API |
@@ -101,17 +104,28 @@ flowchart LR
 
 ### 📐 Modelagem (UML)
 
-Todas as versões dos modelos estão no repositório, em Mermaid (renderizam direto no GitHub):
+Todas as versões dos modelos estão no repositório. A versão atual é a **v4**, em notação UML padrão (PlantUML). As versões v1–v3, em Mermaid, ficaram para mostrar a evolução.
 
-| Modelo | v1 (inicial) | v2 (alinhado ao código) | v3 (protótipo Rota Aluguel) |
-|--------|--------------|-------------------------|-----------------------------|
-| Casos de uso | [v1](docs/v1/01-casos-de-uso.md) | sem mudanças | [v3](docs/v3/01-casos-de-uso.md) |
-| Histórias do usuário | [v1](docs/v1/02-historias-de-usuario.md) | sem mudanças | [v3](docs/v3/02-historias-de-usuario.md) |
-| Classes e estados | [v1](docs/v1/03-diagrama-de-classes.md) | [v2](docs/v2/03-diagrama-de-classes.md) | [v3](docs/v3/03-diagrama-de-classes.md) |
-| Pacotes (visão lógica) | [v1](docs/v1/04-diagrama-de-pacotes.md) | [v2](docs/v2/04-diagrama-de-pacotes.md) | [v3](docs/v3/04-diagrama-de-pacotes.md) |
-| Componentes | [v1](docs/v1/05-diagrama-de-componentes.md) | [v2](docs/v2/05-diagrama-de-componentes.md) | [v3](docs/v3/05-diagrama-de-componentes.md) |
+| Modelo | v1 (inicial) | v2 (alinhado ao código) | v3 (protótipo Rota Aluguel) | **v4 (UML, atual)** |
+|--------|--------------|-------------------------|-----------------------------|---------------------|
+| Casos de uso | [v1](docs/v1/01-casos-de-uso.md) | sem mudanças | [v3](docs/v3/01-casos-de-uso.md) | [**v4**](docs/v4/README.md#casos-de-uso) |
+| Histórias do usuário | [v1](docs/v1/02-historias-de-usuario.md) | sem mudanças | [v3](docs/v3/02-historias-de-usuario.md) | [**v4**](docs/v4/02-historias-de-usuario.md) |
+| Classes | [v1](docs/v1/03-diagrama-de-classes.md) | [v2](docs/v2/03-diagrama-de-classes.md) | [v3](docs/v3/03-diagrama-de-classes.md) | [**v4**](docs/v4/README.md#classes) |
+| Pacotes (visão lógica) | [v1](docs/v1/04-diagrama-de-pacotes.md) | [v2](docs/v2/04-diagrama-de-pacotes.md) | [v3](docs/v3/04-diagrama-de-pacotes.md) | [**v4**](docs/v4/README.md#pacotes) |
+| Componentes | [v1](docs/v1/05-diagrama-de-componentes.md) | [v2](docs/v2/05-diagrama-de-componentes.md) | [v3](docs/v3/05-diagrama-de-componentes.md) | [**v4**](docs/v4/README.md#componentes) |
+| Estados do pedido | — | [v2](docs/v2/03-diagrama-de-classes.md) | [v3](docs/v3/03-diagrama-de-classes.md) | [**v4**](docs/v4/README.md#estados-do-pedido) |
+| Sequência (pedido → contrato) | — | — | — | [**v4**](docs/v4/README.md#sequência) |
+
+<table>
+  <tr>
+    <td align="center"><b>Casos de uso (v4)</b><br><img src="docs/v4/casos-de-uso.svg" alt="Diagrama de casos de uso em UML" width="420"></td>
+    <td align="center"><b>Componentes (v4)</b><br><img src="docs/v4/componentes.svg" alt="Diagrama de componentes em UML" width="420"></td>
+  </tr>
+</table>
 
 📋 **Comparação modelo × código e justificativa de cada mudança:** [docs/CHANGELOG-modelos.md](docs/CHANGELOG-modelos.md)
+
+🎤 **Roteiro da apresentação final:** [docs/apresentacao.md](docs/apresentacao.md)
 
 ---
 
@@ -147,8 +161,11 @@ Abra **http://localhost:3000** no navegador. A API fica em `http://localhost:300
 ├── db.json                      # "banco de dados" do JSON Server (dados iniciais)
 ├── package.json
 ├── docs/
-│   ├── v1/  v2/  v3/            # versões dos modelos UML
-│   └── CHANGELOG-modelos.md     # o que mudou entre as versões e por quê
+│   ├── v1/  v2/  v3/            # versões anteriores dos modelos (Mermaid)
+│   ├── v4/                      # modelos atuais em UML: fontes .puml + imagens .svg/.png
+│   ├── screenshots/             # capturas de tela usadas neste README
+│   ├── CHANGELOG-modelos.md     # o que mudou entre as versões e por quê
+│   └── apresentacao.md          # roteiro da apresentação final
 └── src/
     ├── login.html, cadastro.html, frota.html, pedidos.html, pedido-form.html,
     │   pedido-detalhe.html, clientes.html, cliente-form.html, perfil-agente.html,
@@ -177,10 +194,10 @@ Abra **http://localhost:3000** no navegador. A API fica em `http://localhost:300
 | <img src="docs/screenshots/03-novo-pedido.jpg" alt="Novo pedido com carros livres no período e resumo" width="400"> | <img src="docs/screenshots/04-perfil-cliente.jpg" alt="Perfil do cliente com a carteira do locatário" width="400"> |
 | **Pedidos recebidos (agente)** | **Avaliação financeira** |
 | <img src="docs/screenshots/05-pedidos-recebidos.jpg" alt="Painel de pedidos com indicadores e filtro por status" width="400"> | <img src="docs/screenshots/06-avaliacao-financeira.jpg" alt="Detalhe do pedido com renda do cliente e parecer" width="400"> |
-| **Executar contrato com crédito** | **Credencial de agente** |
-| <img src="docs/screenshots/07-executar-contrato.jpg" alt="Execução de contrato com propriedade do automóvel e crédito pela Tabela Price" width="400"> | <img src="docs/screenshots/08-perfil-agente.jpg" alt="Perfil do agente com a credencial" width="400"> |
-| **Automóvel com prévia** | |
-| <img src="docs/screenshots/09-automovel.jpg" alt="Formulário de automóvel com carroceria, cor e prévia" width="400"> | |
+| **Executar contrato (crédito opcional)** | **Credencial de agente** |
+| <img src="docs/screenshots/07-executar-contrato.jpg" alt="Execução de contrato com propriedade do automóvel e chave de crédito opcional pela Tabela Price" width="400"> | <img src="docs/screenshots/08-perfil-agente.jpg" alt="Perfil do agente com a credencial" width="400"> |
+| **Automóvel com prévia** | **Menu no celular (Offcanvas)** |
+| <img src="docs/screenshots/09-automovel.jpg" alt="Formulário de automóvel com carroceria, cor e prévia" width="400"> | <img src="docs/screenshots/10-menu-celular.jpg" alt="Menu lateral aberto como Offcanvas na tela do celular" width="180"> |
 
 ### Contas de teste
 
@@ -197,7 +214,7 @@ Usuários de teste (senha de todos: `123456`). Os três primeiros aparecem como 
 
 1. Entre como **Cliente** → **Frota** → "Alugar este carro" num carro livre → ajuste as datas → **Enviar pedido**.
 2. Saia e entre como **Banco** → **Pedidos recebidos** → **Ver detalhes** → escreva o parecer → **Aprovar análise financeira**.
-3. Em **Executar contrato**, escolha a propriedade do automóvel, ajuste o crédito e confirme.
+3. Em **Executar contrato**, escolha a propriedade do automóvel, mantenha ou desligue o crédito e confirme.
 4. Volte ao cliente: o pedido aparece como "Contratado" e a carteira do locatário soma o contrato.
 
 ---
@@ -212,13 +229,16 @@ Os testes foram manuais, com o app rodando no navegador e o JSON Server ativo. F
 - **Fluxo de status:** avaliar sem parecer, contratar sem aprovação, cancelar pedido contratado e editar pedido contratado são bloqueados.
 - **Integridade:** não exclui cliente com pedido ativo nem automóvel com pedidos; a exclusão de cliente remove também o login.
 - **Cálculo:** R$ 30.000,00 em 48x a 1,5% a.m. = R$ 881,25; em 24x = R$ 1.497,72.
-- **Layout:** 1360×900 (tamanho do protótipo) e celular (375 px), sem rolagem horizontal.
+- **Crédito opcional:** contrato executado por banco com a chave de crédito desligada fica "Sem contrato de crédito".
+- **Senhas:** login com senha errada é recusado; o cadastro grava só o hash (64 caracteres), sem o campo de senha.
+- **Layout:** 1360×900 (tamanho do protótipo) e celular (375 px) sem rolagem horizontal; no celular o menu abre e fecha como Offcanvas.
+- **Diagramas:** os 14 diagramas Mermaid (v1–v3) passam no analisador do Mermaid; os 6 diagramas PlantUML (v4) são gerados sem erros.
 
 ---
 
 ## ⚠️ Decisões e Limitações
 
-- **Autenticação simulada:** as senhas ficam em texto puro no `db.json` e a sessão no `sessionStorage`. Isso é aceitável apenas porque o JSON Server é uma API simulada para fins acadêmicos.
+- **Autenticação simulada:** o `db.json` guarda só o hash SHA-256 da senha, calculado no navegador (Web Crypto), e a sessão fica no `sessionStorage`. Sem servidor de verdade não há sal nem tokens, então isso serve para a API simulada, não para produção.
 - **JSON Server 0.17:**
   - O `_expand=automovel` não funciona, porque a biblioteca de plural gera `automovels`. Por isso o automóvel é anexado ao pedido no código.
   - Os campos `...Id` nunca são gravados como `null`, porque isso quebra os `DELETE`.
@@ -235,6 +255,7 @@ Os testes foram manuais, com o app rodando no navegador e o JSON Server ativo. F
 - [JSON Server](https://github.com/typicode/json-server/tree/v0.17.4)
 - [Fetch API (MDN)](https://developer.mozilla.org/pt-BR/docs/Web/API/Fetch_API)
 - [Diagrama de Pacotes](https://www.uml-diagrams.org/package-diagrams.html)
+- [PlantUML](https://plantuml.com/pt/)
 
 ---
 
