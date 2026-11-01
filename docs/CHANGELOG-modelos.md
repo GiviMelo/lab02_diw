@@ -76,3 +76,34 @@ Revisão feita ao aplicar o protótipo de interface **Rota Aluguel** e implement
 - **Parecer:** obrigatório, com no mínimo 5 caracteres.
 - **Crédito:** o agente banco sempre informa o crédito ao executar o contrato, como no protótipo. Contratos executados por empresas não têm crédito, então o crédito continua opcional no modelo.
 - **Parcelas:** de 1 a 120.
+
+---
+
+# v3 → v4
+
+Revisão feita após uma avaliação crítica do trabalho com base nos critérios do enunciado. Os modelos estão em [`v4/`](v4/README.md).
+
+## Notação dos diagramas
+
+| # | Mudança | Motivo |
+|---|---------|--------|
+| 1 | Todos os diagramas foram refeitos em **PlantUML**, com notação UML padrão | O Mermaid não tem diagramas de casos de uso, pacotes e componentes. Na v3 esses três eram fluxogramas imitando UML. |
+| 2 | **Casos de uso:** atores com boneco, `Empresa` e `Banco` como especializações (generalização) de `Agente`, ator `Visitante` para "Criar conta" e novo caso incluído "Verificar disponibilidade no período" | Deixa explícito que só o Banco concede crédito, e que a disponibilidade é reutilizada ao criar e ao modificar o pedido. |
+| 3 | **Classes:** visibilidade (`-`, `+`), tipos, enumerações (`StatusPedido`, `TipoAgente`, `TipoPropriedade`, `Carroceria`, `PerfilUsuario`) e operações principais | A v3 listava campos sem tipos UML nem operações. |
+| 4 | **Pacotes:** pacotes UML (com aba) agrupados nos dois subsistemas, com dependências «import», «use» e «access» | Notação padrão de diagrama de pacotes. |
+| 5 | **Componentes:** interfaces fornecidas (pirulito) e requeridas, dentro dos nós "navegador" e "servidor central" | Notação UML 2 de componentes. |
+| 6 | **Novo diagrama de sequência** do fluxo principal (pedido → avaliação → contrato) | Mostra a colaboração entre páginas, `servicos.js`, `api.js` e o JSON Server. |
+
+## Modelo de domínio
+
+| # | Mudança | Motivo |
+|---|---------|--------|
+| 1 | `Usuario.senha` virou `Usuario.senhaHash` (SHA-256) | A senha não deve ficar gravada em texto puro, mesmo numa API simulada. |
+| 2 | Crédito no contrato voltou a ser **opcional também para bancos** (HU12) | O enunciado diz que o aluguel *pode* estar associado a um crédito. Na v3 o banco era obrigado a informar crédito. |
+
+## Interface (impacto no diagrama de componentes)
+
+| # | Mudança | Motivo |
+|---|---------|--------|
+| 1 | A interface passou a ser montada com **componentes do Bootstrap 5**: `btn`, `card`, `form-control`/`form-select`/`form-label`, `table`, `badge`, `alert`, `nav-pills`, `row`/`col`, Toast, Modal, Collapse, `form-switch` e Offcanvas | O enunciado pede a interface em Bootstrap 5. Na v3 quase todo o visual vinha de CSS próprio. Agora o tema `rota.css` só ajusta as variáveis `--bs-*` dos componentes. |
+| 2 | No celular, a barra lateral virou um **Offcanvas** aberto por um botão de menu | A barra lateral do protótipo ocupava muito espaço em telas pequenas. |

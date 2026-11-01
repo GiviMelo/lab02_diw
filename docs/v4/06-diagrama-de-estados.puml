@@ -1,0 +1,25 @@
+@startuml estados
+!include estilo.iuml
+title Máquina de Estados - Pedido de Aluguel (v4)
+hide empty description
+
+[*] --> EmAnalise : cliente envia pedido
+
+state "Em análise" as EmAnalise
+state "Aprovado financeiramente" as Aprovado
+state "Reprovado" as Reprovado
+state "Contrato executado" as Contratado
+state "Cancelado" as Cancelado
+
+EmAnalise --> EmAnalise : modificar\n[cliente dono ou agente]
+EmAnalise --> Aprovado : aprovar(parecer)\n[agente]
+EmAnalise --> Reprovado : reprovar(parecer)\n[agente]
+EmAnalise --> Cancelado : cancelar\n[cliente dono]
+Aprovado --> Aprovado : modificar\n[agente]
+Aprovado --> Cancelado : cancelar\n[cliente dono]
+Aprovado --> Contratado : executarContrato(propriedade, crédito?)\n[agente; crédito só se banco]
+
+Reprovado --> [*]
+Cancelado --> [*]
+Contratado --> [*]
+@enduml

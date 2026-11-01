@@ -1,0 +1,139 @@
+@startuml classes
+!include estilo.iuml
+title Diagrama de Classes - modelo de domínio (v4)
+hide empty methods
+
+enum PerfilUsuario {
+  cliente
+  agente
+}
+enum TipoAgente {
+  empresa
+  banco
+}
+enum TipoPropriedade {
+  cliente
+  empresa
+  banco
+}
+enum StatusPedido {
+  EM_ANALISE
+  APROVADO_FINANCEIRAMENTE
+  REPROVADO
+  CONTRATO_EXECUTADO
+  CANCELADO
+}
+enum Carroceria {
+  hatch
+  sedan
+  suv
+  picape
+}
+
+class Usuario {
+  - id : int
+  - email : String
+  - senhaHash : String
+  - perfil : PerfilUsuario
+  - perfilId : int
+}
+
+class Cliente {
+  - id : int
+  - nome : String
+  - rg : String
+  - cpf : String
+  - endereco : String
+  - profissao : String
+  - membroDesde : String
+  + rendaTotal() : double
+}
+
+class Rendimento {
+  - entidadeEmpregadora : String
+  - valor : double
+}
+
+class Agente {
+  - id : int
+  - nome : String
+  - tipo : TipoAgente
+  - cnpj : String
+}
+
+class Automovel {
+  - id : int
+  - matricula : String
+  - ano : int
+  - marca : String
+  - modelo : String
+  - placa : String
+  - forma : Carroceria
+  - cor : String
+  - proprietarioTipo : TipoPropriedade
+  - proprietarioId : int
+}
+
+class Pedido {
+  - id : int
+  - dataCriacao : DateTime
+  - dataInicio : Date
+  - dataFim : Date
+  - observacoes : String
+  - status : StatusPedido
+  + podeEditar(u : Usuario) : boolean
+  + podeCancelar(u : Usuario) : boolean
+}
+
+class Avaliacao {
+  - agenteNome : String
+  - aprovado : boolean
+  - parecer : String
+  - data : DateTime
+}
+
+class EventoHistorico {
+  - data : DateTime
+  - autor : String
+  - acao : String
+  - detalhe : String [0..1]
+}
+
+class Contrato {
+  - id : int
+  - tipoPropriedade : TipoPropriedade
+  - proprietarioId : int
+  - dataExecucao : DateTime
+}
+
+class Credito {
+  - id : int
+  - valor : double
+  - parcelas : int
+  - taxaMensal : double
+  - valorParcela : double
+  - dataConcessao : DateTime
+  + calcularParcela() : double
+}
+
+Usuario "1" -- "0..1" Cliente : acessa como >
+Usuario "1" -- "0..1" Agente : acessa como >
+Cliente "1" *-- "0..3" Rendimento : declara >
+Cliente "1" -- "0..*" Pedido : introduz >
+Pedido "0..*" --> "1" Automovel : aluga >
+Pedido "1" *-- "0..*" Avaliacao
+Pedido "1" *-- "1..*" EventoHistorico : histórico >
+Agente "1" -- "0..*" Avaliacao : realiza >
+Pedido "1" -- "0..1" Contrato : gera >
+Agente "1" -- "0..*" Contrato : executa >
+Contrato "1" -- "0..1" Credito : financiado por >
+Agente "1" -- "0..*" Credito : concede (banco) >
+Automovel "0..*" --> "1" Cliente : proprietário\n(tipo cliente)
+Automovel "0..*" --> "1" Agente : proprietário\n(empresa/banco)
+
+Usuario ..> PerfilUsuario
+Agente ..> TipoAgente
+Pedido ..> StatusPedido
+Automovel ..> Carroceria
+Contrato ..> TipoPropriedade
+@enduml

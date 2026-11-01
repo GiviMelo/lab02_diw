@@ -1,0 +1,50 @@
+@startuml componentes
+!include estilo.iuml
+title Diagrama de Componentes (v4)
+skinparam componentStyle uml2
+
+node "Computador do cliente ou do agente\n<<navegador>>" as Navegador {
+  component "Páginas HTML\n+ Bootstrap 5" as UI
+  component "Controladores\n(pages/*.js)" as Pages
+  component "Construção de páginas\n(ui.js, carros.js)" as Construcao
+  component "Gestão de pedidos\ne contratos\n(servicos.js)" as Servicos
+  component "Validação\n(validators.js)" as Validacao
+  component "Sessão\n(auth.js)" as Auth
+  component "Cliente HTTP\n(api.js - Fetch)" as Api
+
+  interface "IRenderizacao" as IRender
+  interface "IGestaoPedidos" as IGestao
+  interface "IValidacao" as IValid
+  interface "ISessao" as ISessao
+  interface "IAcessoDados" as IDados
+
+  Construcao - IRender
+  Servicos - IGestao
+  Validacao - IValid
+  Auth - ISessao
+  Api - IDados
+
+  UI ..> Pages
+  Pages ..> IRender
+  Pages ..> IGestao
+  Pages ..> ISessao
+  Servicos ..> IValid
+  Servicos ..> IDados
+  Auth ..> IDados
+}
+
+node "Servidor central\n<<JSON Server 0.17 - porta 3000>>" as Servidor {
+  component "Servidor estático\n(--static ./src)" as Estatico
+  component "API REST" as Rest
+  interface "HTTP GET\nHTML/CSS/JS" as IStatic
+  interface "REST /usuarios /clientes /agentes\n/automoveis /pedidos /contratos /creditos" as IRest
+  database "db.json" as DB
+
+  IStatic -down- Estatico
+  IRest -down- Rest
+  Rest -down-> DB
+}
+
+UI ..> IStatic : carrega
+Api ..> IRest : JSON
+@enduml

@@ -1,0 +1,63 @@
+@startuml casos-de-uso
+!include estilo.iuml
+title Diagrama de Casos de Uso - Sistema de Aluguel de Carros (v4)
+left to right direction
+
+actor "Visitante" as Visitante
+actor "Cliente" as Cliente
+actor "Agente" as Agente
+actor "Empresa" as Empresa
+actor "Banco" as Banco
+
+Agente <|-- Empresa
+Agente <|-- Banco
+
+rectangle "Rota Aluguel" {
+  usecase "Criar conta" as UC01
+  usecase "Autenticar-se" as UC02
+  usecase "Manter perfil do cliente" as UC03
+  usecase "Consultar frota" as UC14
+  usecase "Introduzir pedido\nde aluguel" as UC04
+  usecase "Modificar pedido" as UC05
+  usecase "Consultar pedidos\ne status" as UC06
+  usecase "Cancelar pedido" as UC07
+  usecase "Avaliar pedido\nfinanceiramente" as UC08
+  usecase "Executar contrato" as UC10
+  usecase "Conceder crédito" as UC11
+  usecase "Gerenciar automóveis" as UC12
+  usecase "Manter clientes\n(CRUD)" as UC13
+  usecase "Manter perfil\ndo agente" as UC15
+  usecase "Verificar disponibilidade\nno período" as UC16
+}
+
+Visitante --> UC01
+
+Cliente --> UC02
+Cliente --> UC03
+Cliente --> UC14
+Cliente --> UC04
+Cliente --> UC05
+Cliente --> UC06
+Cliente --> UC07
+
+UC02 <-- Agente
+UC14 <-- Agente
+UC05 <-- Agente
+UC06 <-- Agente
+UC08 <-- Agente
+UC10 <-- Agente
+UC12 <-- Agente
+UC13 <-- Agente
+UC15 <-- Agente
+UC11 <-- Banco
+
+UC04 ..> UC16 : <<include>>
+UC05 ..> UC16 : <<include>>
+UC11 ..> UC10 : <<extend>>
+
+note bottom of UC11
+  Somente agentes do tipo Banco
+  concedem crédito (extensão opcional
+  da execução do contrato).
+end note
+@enduml

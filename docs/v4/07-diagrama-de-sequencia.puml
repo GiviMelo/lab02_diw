@@ -1,0 +1,53 @@
+@startuml sequencia
+!include estilo.iuml
+title Diagrama de Sequência - do pedido ao contrato (v4)
+autonumber
+
+actor Cliente
+actor "Agente (Banco)" as Banco
+participant "pedido-form.js\n/ pedido-detalhe.js" as Pagina
+participant "servicos.js" as Servicos
+participant "api.js" as Api
+database "JSON Server\n(db.json)" as DB
+
+== Cliente introduz o pedido ==
+Cliente -> Pagina : escolhe período
+Pagina -> Servicos : listarLivresNoPeriodo(ini, fim)
+Servicos -> Api : GET /automoveis, GET /pedidos
+Api -> DB
+DB --> Api
+Api --> Servicos
+Servicos --> Pagina : carros sem conflito de datas
+Cliente -> Pagina : escolhe carro e envia
+Pagina -> Servicos : salvarPedido(sessao, dados)
+Servicos -> Servicos : valida período e disponibilidade
+Servicos -> Api : POST /pedidos {status: "Em análise"}
+Api -> DB
+Servicos --> Pagina : pedido criado
+Pagina --> Cliente : detalhe do pedido + aviso
+
+== Agente avalia ==
+Banco -> Pagina : abre o pedido, escreve parecer, aprova
+Pagina -> Servicos : avaliarPedido(sessao, pedido, true, parecer)
+alt parecer com menos de 5 caracteres
+  Servicos --> Pagina : ErroValidacao
+  Pagina --> Banco : "Escreva um parecer antes de decidir."
+else parecer válido
+  Servicos -> Api : PATCH /pedidos/{id} {status: "Aprovado financeiramente"}
+  Api -> DB
+  Servicos --> Pagina : pedido aprovado
+end
+
+== Agente executa o contrato ==
+Banco -> Pagina : escolhe propriedade e crédito
+Pagina -> Servicos : executarContrato(sessao, pedido, dados)
+opt agente é banco e vinculou crédito
+  Servicos -> Api : POST /creditos {valor, parcelas, taxa, valorParcela}
+end
+Servicos -> Api : POST /contratos
+Servicos -> Api : PATCH /automoveis/{id} {proprietário}
+Servicos -> Api : PATCH /pedidos/{id} {status: "Contrato executado"}
+Api -> DB
+Servicos --> Pagina : contrato executado
+Pagina --> Banco : status "Contratado" + histórico
+@enduml

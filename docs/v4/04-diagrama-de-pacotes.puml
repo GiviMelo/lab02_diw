@@ -1,0 +1,45 @@
+@startuml pacotes
+!include estilo.iuml
+title Diagrama de Pacotes - Visão Lógica (v4)
+
+package "Apresentação" as Apresentacao <<Layer>> {
+  package "paginas (src/*.html)" as paginas
+  package "estilos (css/rota.css + Bootstrap 5)" as estilos
+}
+
+package "Construção Dinâmica de Páginas" as Construcao <<Subsistema>> {
+  package "pages (js/pages/*.js)" as pages
+  package "ui (js/ui.js)" as ui
+  package "carros (js/carros.js)" as carros
+}
+
+package "Gestão de Pedidos e Contratos" as Gestao <<Subsistema>> {
+  package "servicos (js/servicos.js)" as servicos
+  package "validators (js/validators.js)" as validators
+  package "auth (js/auth.js)" as auth
+}
+
+package "Dados" as Dados <<Layer>> {
+  package "api (js/api.js)" as api
+  package "JSON Server (db.json)" as jsonserver
+}
+
+paginas ..> pages : <<use>>
+paginas ..> estilos : <<use>>
+pages ..> ui : <<import>>
+pages ..> carros : <<import>>
+pages ..> servicos : <<import>>
+pages ..> auth : <<import>>
+ui ..> auth : <<import>>
+ui ..> servicos : <<import>>
+servicos ..> validators : <<import>>
+servicos ..> api : <<import>>
+auth ..> api : <<import>>
+api ..> jsonserver : <<access>>\nHTTP/JSON
+
+note right of Gestao
+  Os dois subsistemas pedidos no enunciado:
+  - construção dinâmica das páginas
+  - gestão de pedidos e contratos
+end note
+@enduml
