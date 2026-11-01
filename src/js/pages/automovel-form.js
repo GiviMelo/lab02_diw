@@ -28,8 +28,8 @@ function renderCores() {
 function renderDono() {
   const bloco = $('dono');
   if (carro.proprietarioTipo === 'cliente') {
-    bloco.innerHTML = `<label for="dono-cliente">Cliente proprietário</label>
-      <select id="dono-cliente">${clientes
+    bloco.innerHTML = `<label class="form-label" for="dono-cliente">Cliente proprietário</label>
+      <select class="form-select" id="dono-cliente">${clientes
         .map((c) => `<option value="${c.id}"${c.id === carro.proprietarioId ? ' selected' : ''}>${esc(c.nome)}</option>`)
         .join('')}</select>`;
     if (!clientes.some((c) => c.id === carro.proprietarioId)) carro.proprietarioId = clientes[0]?.id ?? null;
@@ -40,7 +40,7 @@ function renderDono() {
   if (!opcoes.some((a) => a.id === carro.proprietarioId)) {
     carro.proprietarioId = opcoes.find((a) => a.id === sessao.perfilId)?.id ?? opcoes[0]?.id ?? null;
   }
-  bloco.innerHTML = `<div class="r-label" style="margin-bottom: 8px">${carro.proprietarioTipo === 'banco' ? 'Banco' : 'Empresa'} proprietário</div>
+  bloco.innerHTML = `<div class="r-label">${carro.proprietarioTipo === 'banco' ? 'Banco' : 'Empresa'} proprietário</div>
     <div class="r-chips" role="group" aria-label="Instituição proprietária" id="inst">${chipsHtml(opcoes.map((a) => [a.id, a.nome]), carro.proprietarioId)}</div>`;
   ligarChips($('inst'), (v) => (carro.proprietarioId = Number(v)));
 }
@@ -57,16 +57,17 @@ async function iniciar() {
   carro.ano = String(carro.ano);
 
   const campo = (k, rotulo, extra = '') =>
-    `<div><label for="a-${k}">${rotulo}</label><input id="a-${k}" data-campo="${k}" value="${esc(carro[k])}" ${extra}></div>`;
+    `<div class="col-md-6 col-xxl-4"><label class="form-label" for="a-${k}">${rotulo}</label><input class="form-control" id="a-${k}" data-campo="${k}" value="${esc(carro[k])}" ${extra}></div>`;
   conteudo.innerHTML = `
-    <a class="r-btn r-voltar" href="automoveis.html">← Voltar aos automóveis</a>
-    <header style="margin-bottom: 28px">
+    <a class="btn btn-outline-secondary r-voltar" href="automoveis.html">← Voltar aos automóveis</a>
+    <header class="mb-4">
       <h1 class="r-h1">${id ? 'Editar automóvel' : 'Novo automóvel'}</h1>
       <p class="r-sub">A ilustração muda conforme o tipo e a cor escolhidos.</p>
     </header>
-    <form class="r-colunas" id="form" novalidate>
-      <section class="r-card" style="flex: 999 1 460px; min-width: 0; padding: 24px; display: flex; flex-direction: column; gap: 20px">
-        <div class="r-grid-2">
+    <form class="row g-4 align-items-start" id="form" novalidate>
+      <section class="col-12 col-xl-8">
+        <div class="card card-body" style="gap: 20px">
+        <div class="row g-3">
           ${campo('marca', 'Marca')}
           ${campo('modelo', 'Modelo')}
           ${campo('ano', 'Ano', 'type="number"')}
@@ -74,28 +75,29 @@ async function iniciar() {
           ${campo('matricula', 'Matrícula', 'placeholder="MAT-0000"')}
         </div>
         <div>
-          <div class="r-label" style="margin-bottom: 8px">Tipo de carroceria</div>
+          <div class="r-label">Tipo de carroceria</div>
           <div class="r-chips" role="group" aria-label="Tipo de carroceria" id="formas">${chipsHtml(Object.entries(FORMAS).map(([k, f]) => [k, f.label]), carro.forma)}</div>
         </div>
         <div>
-          <div class="r-label" style="margin-bottom: 8px">Cor</div>
-          <div style="display: flex; flex-wrap: wrap; gap: 10px" role="group" aria-label="Cor do automóvel" id="cores"></div>
+          <div class="r-label">Cor</div>
+          <div class="d-flex flex-wrap" style="gap: 10px" role="group" aria-label="Cor do automóvel" id="cores"></div>
         </div>
         <div>
-          <div class="r-label" style="margin-bottom: 8px">Proprietário</div>
+          <div class="r-label">Proprietário</div>
           <div class="r-chips" role="group" aria-label="Proprietário" id="props">${chipsHtml([['empresa', 'Empresa'], ['banco', 'Banco'], ['cliente', 'Particular']], carro.proprietarioTipo)}</div>
         </div>
         <div id="dono"></div>
+        </div>
       </section>
-      <aside class="r-card r-col-side" style="padding: 24px; display: flex; flex-direction: column; gap: 16px">
+      <aside class="col-12 col-xl-4"><div class="card card-body gap-3">
         <div class="r-palco r-palco-resumo">
           <div style="width: 85%; margin: 0 auto -2px" id="preview-carro"></div>
           <div class="r-palco-chao"></div>
         </div>
         <div style="font-size: 18px; font-weight: 800" id="preview-nome"></div>
         <div id="erros"></div>
-        <button class="r-btn r-btn-p" type="submit">Salvar automóvel</button>
-      </aside>
+        <button class="btn btn-primary" type="submit">Salvar automóvel</button>
+      </div></aside>
     </form>`;
 
   conteudo.querySelectorAll('[data-campo]').forEach((el) =>

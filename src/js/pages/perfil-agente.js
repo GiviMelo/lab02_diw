@@ -53,22 +53,24 @@ async function iniciar() {
   };
 
   conteudo.innerHTML = `
-    <header style="margin-bottom: 28px">
+    <header class="mb-4">
       <h1 class="r-h1">Meu perfil</h1>
       <p class="r-sub">Dados da sua instituição.</p>
     </header>
-    <div class="r-colunas">
-      <form class="r-card" id="form" novalidate style="flex: 999 1 420px; padding: 24px; display: flex; flex-direction: column; gap: 16px">
-        <div><label for="pa-nome">Razão social</label><input id="pa-nome" value="${esc(agente.nome)}"></div>
-        <div class="r-grid-2">
-          <div><label for="pa-cnpj">CNPJ</label><input id="pa-cnpj" inputmode="numeric" value="${esc(agente.cnpj)}"></div>
-          <div><label>Tipo<input value="${agente.tipo === 'banco' ? 'Banco' : 'Empresa'}" disabled style="margin-top: 6px"></label></div>
-        </div>
-        <div><label>E-mail de acesso<input value="${esc(usuario?.email ?? '')}" disabled style="margin-top: 6px"></label></div>
-        <div id="erros"></div>
-        <button class="r-btn r-btn-p" type="submit">Salvar alterações</button>
-      </form>
-      <aside class="r-carteira r-col-side" id="credencial"></aside>
+    <div class="row g-4 align-items-start">
+      <div class="col-12 col-xl-8">
+        <form class="card card-body gap-3" id="form" novalidate>
+          <div><label class="form-label" for="pa-nome">Razão social</label><input class="form-control" id="pa-nome" value="${esc(agente.nome)}"></div>
+          <div class="row g-3">
+            <div class="col-md-6"><label class="form-label" for="pa-cnpj">CNPJ</label><input class="form-control" id="pa-cnpj" inputmode="numeric" value="${esc(agente.cnpj)}"></div>
+            <div class="col-md-6"><label class="form-label" for="pa-tipo">Tipo</label><input class="form-control" id="pa-tipo" value="${agente.tipo === 'banco' ? 'Banco' : 'Empresa'}" disabled></div>
+          </div>
+          <div><label class="form-label" for="pa-email">E-mail de acesso</label><input class="form-control" id="pa-email" value="${esc(usuario?.email ?? '')}" disabled></div>
+          <div id="erros"></div>
+          <button class="btn btn-primary" type="submit">Salvar alterações</button>
+        </form>
+      </div>
+      <aside class="col-12 col-xl-4"><div class="r-carteira" id="credencial"></div></aside>
     </div>`;
 
   $('pa-nome').addEventListener('input', renderCredencial);

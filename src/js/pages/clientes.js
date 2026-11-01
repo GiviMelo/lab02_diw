@@ -12,10 +12,10 @@ function renderLinhas() {
   document.getElementById('linhas').innerHTML = lista
     .map(
       (c) => `<tr>
-        <td><div style="font-weight: 700">${esc(c.nome)}</div><div style="font-size: 12px; color: #475467">${esc(c.profissao || 'Profissão não informada')}</div></td>
+        <td><div class="fw-bold">${esc(c.nome)}</div><div class="text-secondary" style="font-size: 12px">${esc(c.profissao || 'Profissão não informada')}</div></td>
         <td class="r-num">${esc(c.cpf)}</td>
         <td class="r-num">${moeda(rendaTotal(c))}</td>
-        <td class="r-acoes"><a class="r-btn" href="cliente-form.html?id=${c.id}">Editar</a> <button type="button" class="r-btn r-btn-d" data-excluir="${c.id}">Excluir</button></td>
+        <td class="r-acoes"><a class="btn btn-outline-secondary" href="cliente-form.html?id=${c.id}">Editar</a> <button type="button" class="btn btn-outline-danger" data-excluir="${c.id}">Excluir</button></td>
       </tr>`
     )
     .join('');
@@ -35,12 +35,12 @@ async function iniciar() {
         <h1 class="r-h1">Clientes</h1>
         <p class="r-sub">Cadastre, edite e consulte os locatários.</p>
       </div>
-      <a class="r-btn r-btn-p" href="cliente-form.html?novo=1">+ Novo cliente</a>
+      <a class="btn btn-primary" href="cliente-form.html?novo=1">+ Novo cliente</a>
     </header>
-    <div style="margin-bottom: 16px; max-width: 420px"><label for="busca">Buscar por nome ou CPF</label><input id="busca" type="search" placeholder="Ex.: Maria"></div>
-    <div id="erros" style="margin-bottom: 16px"></div>
-    <div class="r-card r-table-wrap">
-      <table class="r-table">
+    <div class="mb-3" style="max-width: 420px"><label class="form-label" for="busca">Buscar por nome ou CPF</label><input class="form-control" id="busca" type="search" placeholder="Ex.: Maria"></div>
+    <div id="erros" class="mb-3"></div>
+    <div class="card r-table-wrap">
+      <table class="table table-hover table-borderless align-middle mb-0 r-table">
         <thead><tr><th>Cliente</th><th>CPF</th><th>Renda total</th><th><span class="visually-hidden">Ações</span></th></tr></thead>
         <tbody id="linhas"></tbody>
       </table>

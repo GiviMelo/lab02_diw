@@ -45,7 +45,7 @@ const CORES_STATUS = {
 };
 
 function badge(texto, [fundo, cor]) {
-  return `<span class="r-badge" style="background:${fundo};color:${cor}">${esc(texto)}</span>`;
+  return `<span class="badge rounded-pill r-status" style="background:${fundo};color:${cor}">${esc(texto)}</span>`;
 }
 
 export const badgeStatus = (status) => badge(STATUS_LABEL[status] ?? status, CORES_STATUS[status] ?? ['#E6E9EE', '#3B4656']);
@@ -86,39 +86,74 @@ function itensMenu(sessao) {
   return itens;
 }
 
-// Monta a barra lateral; "ativo" é a chave do item de menu da página atual.
+// Monta a barra lateral (Offcanvas do Bootstrap: fixa no desktop, gaveta no celular);
+// "ativo" é a chave do item de menu da página atual.
 export function renderShell(ativo) {
   const sessao = getSessao();
   const papel = sessao.perfil === 'cliente' ? 'Cliente' : `Agente · ${sessao.tipoAgente === 'banco' ? 'Banco' : 'Empresa'}`;
   const menu = itensMenu(sessao)
     .map(
       ([chave, rotulo, href]) =>
-        `<a class="r-nav" href="${href}"${chave === ativo ? ' aria-current="page"' : ''}>${icone(chave === 'perfil' ? 'perfil' : chave)}${esc(rotulo)}</a>`
+        `<li class="nav-item"><a class="nav-link r-nav${chave === ativo ? ' active' : ''}" href="${href}"${
+          chave === ativo ? ' aria-current="page"' : ''
+        }>${icone(chave)}${esc(rotulo)}</a></li>`
     )
     .join('');
-  document.getElementById('sidebar').innerHTML = `
-    <a class="r-brand" href="frota.html">${LOGO} Rota Aluguel</a>
-    <nav aria-label="Principal" class="r-menu">${menu}</nav>
+
+  const aside = document.getElementById('sidebar');
+  aside.classList.add('offcanvas-lg', 'offcanvas-start');
+  aside.tabIndex = -1;
+  aside.setAttribute('aria-label', 'Menu principal');
+  aside.innerHTML = `
+    <div class="d-flex align-items-center justify-content-between">
+      <a class="r-brand" href="frota.html">${LOGO} Rota Aluguel</a>
+      <button type="button" class="btn-close btn-close-white d-lg-none" data-bs-dismiss="offcanvas" data-bs-target="#sidebar" aria-label="Fechar menu"></button>
+    </div>
+    <nav aria-label="Principal"><ul class="nav nav-pills flex-column r-menu">${menu}</ul></nav>
     <div class="r-aside-pe">
       <div class="r-user"><div class="r-user-nome">${esc(sessao.nome)}</div><div class="r-user-papel">${papel}</div></div>
-      <button class="r-nav" type="button" id="btn-sair">${icone('sair')} Sair</button>
+      <button class="nav-link r-nav" style="color:#C5CEDB" type="button" id="btn-sair">${icone('sair')} Sair</button>
     </div>`;
+
+  // Barra superior só aparece abaixo de 992px (d-lg-none) e abre o menu.
+  if (!document.getElementById('topbar')) {
+    aside.insertAdjacentHTML(
+      'beforebegin',
+      `<header class="r-topbar d-lg-none" id="topbar">
+        <a class="r-brand" href="frota.html">${LOGO} Rota Aluguel</a>
+        <button class="btn btn-outline-light" style="min-height:44px" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebar" aria-label="Abrir menu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+      </header>`
+    );
+  }
   document.getElementById('btn-sair').addEventListener('click', logout);
   mostrarAvisoPendente();
 }
 
-// ---------- Avisos ----------
+// ---------- Avisos (Toast do Bootstrap) ----------
 
-let timerToast;
 export function toast(mensagem) {
-  document.querySelector('.r-toast')?.remove();
+  let area = document.getElementById('toasts');
+  if (!area) {
+    area = document.createElement('div');
+    area.id = 'toasts';
+    area.className = 'toast-container position-fixed bottom-0 start-50 translate-middle-x p-4';
+    document.body.appendChild(area);
+  }
+  area.innerHTML = '';
   const el = document.createElement('div');
-  el.className = 'r-toast';
+  el.className = 'toast r-toast';
   el.setAttribute('role', 'status');
-  el.textContent = mensagem;
-  document.body.appendChild(el);
-  clearTimeout(timerToast);
-  timerToast = setTimeout(() => el.remove(), 2600);
+  el.setAttribute('aria-live', 'polite');
+  el.innerHTML = `<div class="toast-body">${esc(mensagem)}</div>`;
+  area.appendChild(el);
+  if (window.bootstrap) {
+    new bootstrap.Toast(el, { delay: 2600 }).show();
+  } else {
+    el.classList.add('show');
+    setTimeout(() => el.remove(), 2600);
+  }
 }
 
 // Aviso que sobrevive a uma troca de página (ex.: salvar e voltar para a lista).
@@ -151,7 +186,7 @@ export function irPara(url, mensagem) {
 export function mostrarErros(container, erros) {
   const lista = (Array.isArray(erros) ? erros : [erros]).filter(Boolean);
   container.innerHTML = lista.length
-    ? `<ul role="alert" class="r-erros">${lista.map((e) => `<li>${esc(e)}</li>`).join('')}</ul>`
+    ? `<div class="alert alert-danger" role="alert"><ul class="mb-0 ps-3">${lista.map((e) => `<li>${esc(e)}</li>`).join('')}</ul></div>`
     : '';
 }
 
@@ -166,13 +201,13 @@ export function confirmar(mensagem, { titulo = 'Confirmação', confirmar: rotul
     el.tabIndex = -1;
     el.setAttribute('aria-labelledby', 'confirmar-titulo');
     el.innerHTML = `
-      <div class="modal-dialog modal-dialog-centered"><div class="modal-content r-card" style="padding:12px">
+      <div class="modal-dialog modal-dialog-centered"><div class="modal-content p-2">
         <div class="modal-header border-0"><h2 class="modal-title r-h2 m-0" id="confirmar-titulo">${esc(titulo)}</h2>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button></div>
-        <div class="modal-body pt-0" style="color:#475467">${esc(mensagem)}</div>
+        <div class="modal-body pt-0 text-secondary">${esc(mensagem)}</div>
         <div class="modal-footer border-0">
-          <button type="button" class="r-btn" data-bs-dismiss="modal">Voltar</button>
-          <button type="button" class="r-btn r-btn-d" id="confirmar-sim">${esc(rotulo)}</button>
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Voltar</button>
+          <button type="button" class="btn btn-outline-danger" id="confirmar-sim">${esc(rotulo)}</button>
         </div>
       </div></div>`;
     document.body.appendChild(el);
@@ -192,10 +227,13 @@ export function confirmar(mensagem, { titulo = 'Confirmação', confirmar: rotul
 
 // ---------- Chips ----------
 
-// opcoes: [[valor, rótulo], ...] → botões .chip com aria-pressed.
+// opcoes: [[valor, rótulo], ...] → botões de alternância do Bootstrap (.btn.active + aria-pressed).
 export const chipsHtml = (opcoes, atual) =>
   opcoes
-    .map(([valor, rotulo]) => `<button type="button" class="chip" data-valor="${esc(valor)}" aria-pressed="${String(valor) === String(atual)}">${esc(rotulo)}</button>`)
+    .map(([valor, rotulo]) => {
+      const on = String(valor) === String(atual);
+      return `<button type="button" class="btn chip${on ? ' active' : ''}" data-valor="${esc(valor)}" aria-pressed="${on}">${esc(rotulo)}</button>`;
+    })
     .join('');
 
 // Liga um grupo de chips: ao clicar, marca o chip e chama aoEscolher(valor).
@@ -203,7 +241,10 @@ export function ligarChips(container, aoEscolher) {
   container.addEventListener('click', (e) => {
     const chip = e.target.closest('.chip[data-valor]');
     if (!chip) return;
-    container.querySelectorAll('.chip').forEach((c) => c.setAttribute('aria-pressed', String(c === chip)));
+    container.querySelectorAll('.chip').forEach((c) => {
+      c.classList.toggle('active', c === chip);
+      c.setAttribute('aria-pressed', String(c === chip));
+    });
     aoEscolher(chip.dataset.valor);
   });
 }

@@ -1,5 +1,6 @@
 // Regras de negócio: gestão de clientes, agentes, automóveis, pedidos e contratos.
 import { api } from './api.js';
+import { hashSenha } from './auth.js';
 import {
   validarCliente,
   validarAgente,
@@ -95,7 +96,7 @@ export async function criarCliente(dados, email, senha, { parcial = false } = {}
   if (!erros.length && (await cpfEmUso(dados.cpf))) erros.push('Já existe um cliente com este CPF.');
   lancarSeErros(erros);
   const cliente = await api.criar('/clientes', { ...normalizarCliente(dados), membroDesde: mesAno() });
-  await api.criar('/usuarios', { email: emailNorm, senha, perfil: 'cliente', perfilId: cliente.id });
+  await api.criar('/usuarios', { email: emailNorm, senhaHash: await hashSenha(senha), perfil: 'cliente', perfilId: cliente.id });
   return cliente;
 }
 
@@ -150,7 +151,7 @@ export async function criarAgente(dados, email, senha) {
     tipo: dados.tipo,
     cnpj: mascaraCNPJ(dados.cnpj),
   });
-  await api.criar('/usuarios', { email: emailNorm, senha, perfil: 'agente', perfilId: agente.id });
+  await api.criar('/usuarios', { email: emailNorm, senhaHash: await hashSenha(senha), perfil: 'agente', perfilId: agente.id });
   return agente;
 }
 

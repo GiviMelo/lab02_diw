@@ -9,33 +9,33 @@ let perfil = 'cliente';
 let tipo = 'banco';
 
 document.getElementById('conteudo').innerHTML = `
-  <form class="r-card" id="form" novalidate style="width: 100%; max-width: 540px; padding: 36px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px">
+  <form class="card w-100 p-4 p-sm-5 gap-3" id="form" novalidate style="max-width: 540px">
     <div>
       <h1 style="margin: 0 0 4px; font-size: 26px; letter-spacing: -0.02em">Criar conta</h1>
-      <p style="margin: 0; color: #475467; font-size: 15px">O cadastro é necessário antes de alugar ou avaliar pedidos.</p>
+      <p class="r-sub">O cadastro é necessário antes de alugar ou avaliar pedidos.</p>
     </div>
     <div class="r-chips" role="group" aria-label="Tipo de conta" id="perfis">
       ${chipsHtml([['cliente', 'Sou cliente'], ['agente', 'Sou empresa ou banco']], perfil)}
     </div>
-    <div><label for="cd-nome" id="lbl-nome">Nome completo</label><input id="cd-nome" autocomplete="name"></div>
-    <div class="r-grid-2">
-      <div><label for="cd-email">E-mail</label><input id="cd-email" type="email" autocomplete="email"></div>
-      <div><label for="cd-senha">Senha</label><input id="cd-senha" type="password" autocomplete="new-password"></div>
+    <div><label class="form-label" for="cd-nome" id="lbl-nome">Nome completo</label><input class="form-control" id="cd-nome" autocomplete="name"></div>
+    <div class="row g-3">
+      <div class="col-sm-6"><label class="form-label" for="cd-email">E-mail</label><input class="form-control" id="cd-email" type="email" autocomplete="email"></div>
+      <div class="col-sm-6"><label class="form-label" for="cd-senha">Senha</label><input class="form-control" id="cd-senha" type="password" autocomplete="new-password"></div>
     </div>
-    <div class="r-grid-2" id="bloco-cliente">
-      <div><label for="cd-cpf">CPF</label><input id="cd-cpf" inputmode="numeric" placeholder="000.000.000-00"></div>
-      <div><label for="cd-rg">RG</label><input id="cd-rg"></div>
+    <div class="row g-3" id="bloco-cliente">
+      <div class="col-sm-6"><label class="form-label" for="cd-cpf">CPF</label><input class="form-control" id="cd-cpf" inputmode="numeric" placeholder="000.000.000-00"></div>
+      <div class="col-sm-6"><label class="form-label" for="cd-rg">RG</label><input class="form-control" id="cd-rg"></div>
     </div>
-    <div class="r-grid-2" id="bloco-agente" hidden>
-      <div><label for="cd-cnpj">CNPJ</label><input id="cd-cnpj" inputmode="numeric" placeholder="00.000.000/0000-00"></div>
-      <div>
+    <div class="row g-3" id="bloco-agente" hidden>
+      <div class="col-sm-6"><label class="form-label" for="cd-cnpj">CNPJ</label><input class="form-control" id="cd-cnpj" inputmode="numeric" placeholder="00.000.000/0000-00"></div>
+      <div class="col-sm-6">
         <div class="r-label">Tipo de agente</div>
         <div class="r-chips" role="group" aria-label="Tipo de agente" id="tipos">${chipsHtml([['banco', 'Banco'], ['empresa', 'Empresa']], tipo)}</div>
       </div>
     </div>
     <div id="erros"></div>
-    <button class="r-btn r-btn-p" type="submit">Criar conta e entrar</button>
-    <a class="r-btn" href="login.html">Já tenho conta</a>
+    <button class="btn btn-primary" type="submit">Criar conta e entrar</button>
+    <a class="btn btn-outline-secondary" href="login.html">Já tenho conta</a>
   </form>`;
 
 const $ = (id) => document.getElementById(id);

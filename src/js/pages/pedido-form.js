@@ -21,15 +21,15 @@ function somarDias(iso, n) {
 function renderLivres() {
   const caixa = $('livres');
   if (!livres.length) {
-    caixa.innerHTML = '<p style="margin: 0; font-size: 14px; color: #475467">Nenhum automóvel livre neste período. Tente outras datas.</p>';
+    caixa.innerHTML = '<p class="text-secondary m-0" style="font-size: 14px">Nenhum automóvel livre neste período. Tente outras datas.</p>';
     return;
   }
   caixa.innerHTML = livres
     .map(
       (c) => `<button type="button" class="r-opcao" data-carro="${c.id}" aria-pressed="${c.id === carroSel}">
-        <span style="display: flex; flex-direction: column; gap: 2px; text-align: left">
+        <span class="d-flex flex-column gap-1 text-start">
           <span style="font-size: 16px; font-weight: 800">${esc(c.marca)} ${esc(c.modelo)}</span>
-          <span style="font-size: 13px; color: #475467">${forma(c.forma).label} · ${corNome(c.cor)} · ${c.ano}</span>
+          <span class="text-secondary" style="font-size: 13px">${forma(c.forma).label} · ${corNome(c.cor)} · ${c.ano}</span>
         </span>
         <span style="font-weight: 800; letter-spacing: 0.08em; font-size: 14px">${esc(c.placa)}</span>
       </button>`
@@ -80,47 +80,51 @@ async function iniciar() {
   const inicio = pedido?.dataInicio ?? somarDias(hoje(), 1);
   const fim = pedido?.dataFim ?? somarDias(inicio, 4);
   const voltar = pedido ? `pedido-detalhe.html?id=${pedido.id}` : 'frota.html';
+  const linhaResumo = (rotulo, id) =>
+    `<dt class="col-5 fw-normal text-secondary">${rotulo}</dt><dd class="col-7 mb-0 fw-bold text-end" id="${id}"></dd>`;
 
   conteudo.innerHTML = `
-    <header style="margin-bottom: 28px">
+    <header class="mb-4">
       <h1 class="r-h1">${pedido ? `Editar pedido #${pedido.id}` : 'Novo pedido de aluguel'}</h1>
       <p class="r-sub">Escolha o automóvel, defina o período e envie para análise.</p>
     </header>
-    <form class="r-colunas" id="form" novalidate>
-      <div class="r-col-main">
-        <section class="r-card" style="padding: 24px">
-          <h2 class="r-h2" style="margin-bottom: 4px"><span style="color: #0A6B5E">1.</span> Automóvel</h2>
-          <p style="margin: 0 0 16px; font-size: 14px; color: #475467">Somente carros livres no período aparecem aqui.</p>
-          <div style="display: flex; flex-direction: column; gap: 10px" id="livres" role="group" aria-label="Automóveis livres"></div>
+    <form class="row g-4 align-items-start" id="form" novalidate>
+      <div class="col-12 col-xl-8 d-flex flex-column gap-4">
+        <section class="card card-body">
+          <h2 class="r-h2" style="margin-bottom: 4px"><span class="text-primary">1.</span> Automóvel</h2>
+          <p class="text-secondary" style="margin: 0 0 16px; font-size: 14px">Somente carros livres no período aparecem aqui.</p>
+          <div class="d-flex flex-column" style="gap: 10px" id="livres" role="group" aria-label="Automóveis livres"></div>
         </section>
-        <section class="r-card" style="padding: 24px">
-          <h2 class="r-h2"><span style="color: #0A6B5E">2.</span> Período</h2>
-          <div class="r-grid-2">
-            <div><label for="ini">Início</label><input id="ini" type="date" value="${inicio}"></div>
-            <div><label for="fim">Fim</label><input id="fim" type="date" value="${fim}"></div>
+        <section class="card card-body">
+          <h2 class="r-h2"><span class="text-primary">2.</span> Período</h2>
+          <div class="row g-3">
+            <div class="col-md-6"><label class="form-label" for="ini">Início</label><input class="form-control" id="ini" type="date" value="${inicio}"></div>
+            <div class="col-md-6"><label class="form-label" for="fim">Fim</label><input class="form-control" id="fim" type="date" value="${fim}"></div>
           </div>
-          <p role="alert" class="r-erro" id="erro-data" style="margin-top: 12px" hidden>A data final deve ser depois da inicial.</p>
-          <div style="margin-top: 16px"><label for="obs">Observações (opcional)</label><textarea id="obs" rows="3" placeholder="Ex.: preciso de cadeirinha infantil">${esc(pedido?.observacoes)}</textarea></div>
+          <p role="alert" class="r-erro mt-3" id="erro-data" hidden>A data final deve ser depois da inicial.</p>
+          <div class="mt-3"><label class="form-label" for="obs">Observações (opcional)</label><textarea class="form-control" id="obs" rows="3" placeholder="Ex.: preciso de cadeirinha infantil">${esc(pedido?.observacoes)}</textarea></div>
         </section>
       </div>
-      <aside class="r-card r-col-side" style="padding: 24px; display: flex; flex-direction: column; gap: 16px">
-        <div class="r-palco r-palco-resumo">
-          <div style="width: 85%; margin: 0 auto -2px" id="res-carro"></div>
-          <div class="r-palco-chao"></div>
+      <aside class="col-12 col-xl-4">
+        <div class="card card-body gap-3">
+          <div class="r-palco r-palco-resumo">
+            <div style="width: 85%; margin: 0 auto -2px" id="res-carro"></div>
+            <div class="r-palco-chao"></div>
+          </div>
+          <h2 class="r-h2 m-0">Resumo</h2>
+          <dl class="row g-0 gy-2 m-0" style="font-size: 14px">
+            ${linhaResumo('Automóvel', 'res-nome')}
+            ${linhaResumo('Retirada', 'res-ini')}
+            ${linhaResumo('Devolução', 'res-fim')}
+            ${linhaResumo('Duração', 'res-dias')}
+          </dl>
+          <div class="text-secondary border-top pt-3" style="font-size: 13px; line-height: 1.5">
+            Após o envio, o pedido entra em <strong>Em análise</strong>. Você poderá editá-lo ou cancelá-lo até a aprovação.
+          </div>
+          <div id="erros"></div>
+          <button class="btn btn-primary" type="submit" id="enviar">${pedido ? 'Salvar alterações' : 'Enviar pedido'}</button>
+          <a class="btn btn-outline-secondary" href="${voltar}">Descartar</a>
         </div>
-        <h2 class="r-h2" style="margin: 0">Resumo</h2>
-        <dl style="margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 10px 16px; font-size: 14px">
-          <dt style="color: #475467; font-weight: 400">Automóvel</dt><dd style="margin: 0; font-weight: 700; text-align: right" id="res-nome"></dd>
-          <dt style="color: #475467; font-weight: 400">Retirada</dt><dd style="margin: 0; font-weight: 700; text-align: right" id="res-ini"></dd>
-          <dt style="color: #475467; font-weight: 400">Devolução</dt><dd style="margin: 0; font-weight: 700; text-align: right" id="res-fim"></dd>
-          <dt style="color: #475467; font-weight: 400">Duração</dt><dd style="margin: 0; font-weight: 700; text-align: right" id="res-dias"></dd>
-        </dl>
-        <div style="font-size: 13px; color: #475467; line-height: 1.5; border-top: 1px solid #E1E6ED; padding-top: 14px">
-          Após o envio, o pedido entra em <strong>Em análise</strong>. Você poderá editá-lo ou cancelá-lo até a aprovação.
-        </div>
-        <div id="erros"></div>
-        <button class="r-btn r-btn-p" type="submit" id="enviar">${pedido ? 'Salvar alterações' : 'Enviar pedido'}</button>
-        <a class="r-btn" href="${voltar}">Descartar</a>
       </aside>
     </form>`;
 

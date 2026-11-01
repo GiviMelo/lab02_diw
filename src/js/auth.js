@@ -11,15 +11,19 @@ export function getSessao() {
   }
 }
 
+// SHA-256 da senha (Web Crypto). O db.json guarda só o hash, nunca a senha.
+// Sem "sal" e calculado no navegador: suficiente para a API simulada, não para produção.
+export async function hashSenha(senha) {
+  const bytes = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(String(senha)));
+  return [...new Uint8Array(bytes)].map((b) => b.toString(16).padStart(2, '0')).join('');
+}
+
 export async function login(email, senha) {
   const emailNorm = String(email).trim().toLowerCase();
-  const usuarios = await api.listar(
-    `/usuarios?email=${encodeURIComponent(emailNorm)}&senha=${encodeURIComponent(senha)}`
-  );
-  if (usuarios.length === 0) {
+  const [usuario] = await api.listar(`/usuarios?email=${encodeURIComponent(emailNorm)}`);
+  if (!usuario || usuario.senhaHash !== (await hashSenha(senha))) {
     throw new Error('E-mail ou senha inválidos.');
   }
-  const usuario = usuarios[0];
   const colecao = usuario.perfil === 'cliente' ? 'clientes' : 'agentes';
   const perfil = await api.obter(`/${colecao}/${usuario.perfilId}`);
   const sessao = {

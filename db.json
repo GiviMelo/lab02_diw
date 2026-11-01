@@ -3,35 +3,35 @@
     {
       "id": 1,
       "email": "cliente@teste.com",
-      "senha": "123456",
+      "senhaHash": "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
       "perfil": "cliente",
       "perfilId": 1
     },
     {
       "id": 2,
       "email": "banco@teste.com",
-      "senha": "123456",
+      "senhaHash": "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
       "perfil": "agente",
       "perfilId": 1
     },
     {
       "id": 3,
       "email": "empresa@teste.com",
-      "senha": "123456",
+      "senhaHash": "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
       "perfil": "agente",
       "perfilId": 2
     },
     {
       "id": 4,
       "email": "joao@teste.com",
-      "senha": "123456",
+      "senhaHash": "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
       "perfil": "cliente",
       "perfilId": 2
     },
     {
       "id": 5,
       "email": "ana@teste.com",
-      "senha": "123456",
+      "senhaHash": "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
       "perfil": "cliente",
       "perfilId": 3
     }

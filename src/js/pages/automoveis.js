@@ -22,7 +22,7 @@ function renderLinhas() {
         <td style="font-weight: 700; letter-spacing: 0.06em">${esc(c.placa)}</td>
         <td><span style="display: inline-flex; align-items: center; gap: 8px"><span class="r-bolinha" style="background: ${/^#[0-9a-f]{6}$/i.test(c.cor) ? c.cor : '#C5CEDB'}"></span>${corNome(c.cor)}</span></td>
         <td>${esc(nomeDono(c))}</td>
-        <td class="r-acoes"><a class="r-btn" href="automovel-form.html?id=${c.id}">Editar</a> <button type="button" class="r-btn r-btn-d" data-excluir="${c.id}">Excluir</button></td>
+        <td class="r-acoes"><a class="btn btn-outline-secondary" href="automovel-form.html?id=${c.id}">Editar</a> <button type="button" class="btn btn-outline-danger" data-excluir="${c.id}">Excluir</button></td>
       </tr>`
     )
     .join('');
@@ -42,11 +42,11 @@ async function iniciar() {
         <h1 class="r-h1">Automóveis</h1>
         <p class="r-sub">Gerencie a frota de empresas e bancos.</p>
       </div>
-      <a class="r-btn r-btn-p" href="automovel-form.html">+ Novo automóvel</a>
+      <a class="btn btn-primary" href="automovel-form.html">+ Novo automóvel</a>
     </header>
     <div id="erros" style="margin-bottom: 16px"></div>
-    <div class="r-card r-table-wrap">
-      <table class="r-table" style="min-width: 720px">
+    <div class="card r-table-wrap">
+      <table class="table table-hover table-borderless align-middle mb-0 r-table" style="min-width: 720px">
         <thead><tr><th>Automóvel</th><th>Placa</th><th>Cor</th><th>Proprietário</th><th><span class="visually-hidden">Ações</span></th></tr></thead>
         <tbody id="linhas"></tbody>
       </table>
