@@ -156,7 +156,7 @@
       "placa": "JKL0M12",
       "forma": "hatch",
       "cor": "#8A97A8",
-      "proprietarioTipo": "banco",
+      "proprietarioTipo": "cliente",
       "proprietarioId": 1,
       "foto": "img/carros/4.jpg",
       "fotoCredito": "Just a Man · CC BY 4.0",
@@ -404,6 +404,44 @@
       ],
       "id": 5,
       "contratoId": 3
+    },
+    {
+      "clienteId": 1,
+      "automovelId": 4,
+      "dataInicio": "2026-11-05",
+      "dataFim": "2026-11-08",
+      "observacoes": "Preciso de cadeirinha infantil",
+      "dataCriacao": "2026-11-03T12:31:11.659Z",
+      "status": "Contrato executado",
+      "avaliacoes": [
+        {
+          "agenteId": 2,
+          "agenteNome": "Locadora Central",
+          "aprovado": true,
+          "parecer": "AProvado",
+          "data": "2026-11-03T12:32:39.327Z"
+        }
+      ],
+      "historico": [
+        {
+          "data": "2026-11-03T12:31:11.659Z",
+          "autor": "Maria Souza",
+          "acao": "Pedido enviado"
+        },
+        {
+          "data": "2026-11-03T12:32:39.327Z",
+          "autor": "Locadora Central",
+          "acao": "Análise financeira aprovada",
+          "detalhe": "Parecer: AProvado"
+        },
+        {
+          "data": "2026-11-03T12:32:50.370Z",
+          "autor": "Locadora Central",
+          "acao": "Contrato executado"
+        }
+      ],
+      "id": 6,
+      "contratoId": 5
     }
   ],
   "contratos": [
@@ -439,6 +477,14 @@
       "proprietarioId": 1,
       "dataExecucao": "2026-11-03T12:20:36.046Z",
       "id": 4
+    },
+    {
+      "pedidoId": 6,
+      "agenteId": 2,
+      "tipoPropriedade": "cliente",
+      "proprietarioId": 1,
+      "dataExecucao": "2026-11-03T12:32:50.353Z",
+      "id": 5
     }
   ],
   "creditos": [

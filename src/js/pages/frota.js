@@ -21,7 +21,7 @@ function cardCarro(c) {
   const acao =
     ehCliente && livre
       ? `<a class="btn btn-primary mt-auto" href="pedido-form.html?carro=${c.id}">Alugar este carro</a>`
-      : `<div class="mt-auto d-flex align-items-center" style="min-height: 44px; font-size: 13px; color: #667085">${
+      : `<div class="mt-auto d-flex align-items-center" style="min-height: 44px; font-size: 13px; color: var(--r-muted-2)">${
           livre ? 'Apenas clientes criam pedidos' : 'Indisponível no momento'
         }</div>`;
   return `

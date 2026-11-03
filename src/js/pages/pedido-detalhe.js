@@ -58,7 +58,7 @@ async function camposDoAluguel() {
 
 function painelAvaliacao() {
   return `
-    <div class="rounded-3 px-3 py-3" style="background: #F3F5F7">
+    <div class="rounded-3 px-3 py-3" style="background: var(--r-surface-2)">
       <div class="r-kicker">Renda declarada do cliente</div>
       <div style="font-size: 22px; font-weight: 800; margin-top: 2px">${moeda(rendaTotal(pedido.cliente))}</div>
     </div>
@@ -81,7 +81,7 @@ function painelCredito() {
             <div class="col-6"><label class="form-label" for="cn">Parcelas</label><input class="form-control" id="cn" type="number" min="1" max="120" value="${credito.parcelas}"></div>
             <div class="col-6"><label class="form-label" for="ctx">Taxa (% a.m.)</label><input class="form-control" id="ctx" type="number" min="0" step="0.1" value="${credito.taxaMensal}"></div>
           </div>
-          <div class="rounded-3" style="background: #EAF7F3; padding: 12px 14px">
+          <div class="rounded-3" style="background: var(--r-tint); padding: 12px 14px">
             <div style="font-size: 12px; color: #0B5B3A; font-weight: 700">Parcela estimada (Tabela Price)</div>
             <div class="r-num" style="font-size: 22px; font-weight: 800; color: #0B5B3A" id="parcela"></div>
           </div>

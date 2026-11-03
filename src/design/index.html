@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../js/tema.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Saira:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../css/rota.css" rel="stylesheet">
+  <title>Design System · Rota Aluguel</title>
+  <style>
+    /* Os cartões daqui não usam .card-body: o espaçamento interno vem do próprio .card (.p-0 o remove). */
+    .card { padding: var(--bs-card-spacer-y) var(--bs-card-spacer-x); }
+    .ds-nav { position: sticky; top: 0; z-index: 10; background: #0E1726; }
+    .ds-nav a { color: #C5CEDB; text-decoration: none; font-size: 13px; font-weight: 600; padding: 8px 14px; border-radius: 999px; white-space: nowrap; }
+    .ds-nav a:hover { background: #1B2639; color: #fff; }
+    .ds-sec { padding: 48px 0 8px; scroll-margin-top: 56px; }
+    .ds-sw { border-radius: 12px; overflow: hidden; border: 1px solid var(--bs-border-color); background: var(--bs-body-bg); height: 100%; }
+    .ds-sw-cor { height: 72px; display: flex; align-items: flex-end; padding: 8px 10px; font-size: 12px; font-weight: 700; }
+    .ds-sw-info { padding: 10px; font-size: 12px; color: var(--r-muted); }
+    .ds-sw-info b { color: var(--r-text); display: block; font-size: 13px; }
+    .ds-code { font-family: ui-monospace, Menlo, monospace; font-size: 12px; color: var(--r-muted); }
+    .ds-esc { display: flex; height: 56px; border-radius: 12px; overflow: hidden; border: 1px solid var(--bs-border-color); }
+    .ds-esc div { flex: 1; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 6px; font-size: 11px; font-weight: 700; }
+    .ds-ico { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 16px 8px; font-size: 12px; font-weight: 600; }
+    .ds-box { background: var(--r-tint); border: 1px dashed var(--r-action); }
+    .ds-rad { width: 96px; height: 72px; background: var(--r-action); }
+    pre.ds-pre { background: #0E1726; color: #C5CEDB; border-radius: 12px; padding: 16px; font-size: 12px; overflow-x: auto; margin: 0; }
+  </style>
+</head>
+<body>
+  <nav class="ds-nav" aria-label="Seções do design system">
+    <div class="d-flex gap-1 px-4 px-md-5 py-3 overflow-auto mx-auto" style="max-width: 1160px">
+      <a href="#cores">Cores</a><a href="#temas">Temas</a><a href="#escala">Escala cromática</a><a href="#tipografia">Tipografia e fontes</a>
+      <a href="#marca">Logo e marca</a><a href="#botoes">Botões</a><a href="#icones">Ícones</a>
+      <a href="#espacamentos">Espaçamentos</a><a href="#arredondamentos">Arredondamentos</a><a href="#acessibilidade">Acessibilidade</a>
+    </div>
+  </nav>
+
+  <main class="container px-4 px-md-5 py-5" style="max-width: 1160px">
+    <header class="r-header" style="align-items: flex-start">
+      <div>
+        <div class="r-kicker">DIW · Laboratório 02</div>
+        <h1 class="r-h1">Design System · Rota Aluguel</h1>
+        <p class="r-sub" style="max-width: 640px">Conjunto de padrões e regras visuais do sistema. Centraliza as decisões de interface para facilitar a escalabilidade e a manutenibilidade do front-end. Todos os exemplos abaixo usam os próprios estilos de <span class="ds-code">css/rota.css</span> sobre o Bootstrap 5.3.</p>
+      </div>
+      <a class="btn btn-outline-secondary" href="../login.html">Voltar ao sistema</a>
+    </header>
+
+    <!-- CORES -->
+    <section class="ds-sec" id="cores">
+      <h2 class="r-h2">Cores / paleta</h2>
+      <p class="text-secondary">Verde-azulado como cor de ação, azul-marinho para a estrutura e neutros frios para texto e bordas. As cores de ação sobrescrevem as variáveis <span class="ds-code">--bs-*</span> do Bootstrap.</p>
+      <div class="row row-cols-2 row-cols-md-4 g-3" id="paleta"></div>
+    </section>
+
+    <!-- TEMAS -->
+    <section class="ds-sec" id="temas">
+      <h2 class="r-h2">Temas claro e escuro</h2>
+      <p class="text-secondary">O tema é definido pelo atributo <span class="ds-code">data-bs-theme</span> no <span class="ds-code">&lt;html&gt;</span> (padrão do Bootstrap 5.3). <span class="ds-code">js/tema.js</span> usa a preferência do sistema na primeira visita e guarda a escolha em <span class="ds-code">localStorage</span>. O botão fica no menu lateral e, nas páginas sem menu, flutua no canto inferior direito.</p>
+      <div class="card p-0"><div class="r-table-wrap"><table class="table r-table mb-0" style="min-width: 560px"><thead><tr><th>Token</th><th>Uso</th><th>Claro</th><th>Escuro</th></tr></thead><tbody id="temas-tab"></tbody></table></div></div>
+      <p class="text-secondary mt-3 mb-0" style="font-size: 13px">Superfícies que já são escuras nos dois temas (barra lateral, hero, carteira, painel do login) não mudam. No escuro, a cor de ação passa de #0A6B5E para #2FB5A0 com texto marinho, para manter o contraste.</p>
+    </section>
+
+    <!-- ESCALA -->
+    <section class="ds-sec" id="escala">
+      <h2 class="r-h2">Escala cromática</h2>
+      <div id="escalas" class="d-flex flex-column gap-4"></div>
+      <h3 class="r-h2 mt-4" style="font-size: 15px">Cores de status do pedido</h3>
+      <div class="d-flex flex-wrap gap-2" id="status"></div>
+    </section>
+
+    <!-- TIPOGRAFIA -->
+    <section class="ds-sec" id="tipografia">
+      <h2 class="r-h2">Tipografia e fontes</h2>
+      <div class="card">
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div class="r-kicker">Exibição (automotiva)</div>
+            <div style="font-size: 56px; font-weight: 800; line-height: 1; font-family: var(--r-font-display)">Aa 123</div>
+            <div class="fw-bold mt-2" style="font-family: var(--r-font-display)">Saira</div>
+            <div class="text-secondary" style="font-size: 13px">Google Fonts · pesos 500 a 800. Geometria técnica e levemente larga, próxima de painéis e placas de veículos. Usada em títulos, marca, kickers, placa e números de destaque (<span class="ds-code">--r-font-display</span>).</div>
+            <div class="r-kicker mt-4" style="font-family: var(--r-font-base, Manrope)">Texto</div>
+            <div style="font-size: 40px; font-weight: 800; line-height: 1">Aa 123</div>
+            <div class="fw-bold mt-2">Manrope</div>
+            <div class="text-secondary" style="font-size: 13px">Pesos 400 a 800 · reserva: system-ui. Corpo, formulários, tabelas e botões, pela legibilidade em tamanhos pequenos.</div>
+          </div>
+          <div class="col-md-8 d-flex flex-column gap-3">
+            <div class="d-flex flex-wrap align-items-baseline gap-3"><span class="ds-code" style="width: 150px">Título de página · 32/700</span><span class="r-h1 m-0">Frota disponível</span></div>
+            <div class="d-flex flex-wrap align-items-baseline gap-3"><span class="ds-code" style="width: 150px">Seção · 18/700</span><span class="r-h2 m-0">Pedidos recebidos</span></div>
+            <div class="d-flex flex-wrap align-items-baseline gap-3"><span class="ds-code" style="width: 150px">Corpo · 15/400</span><span>Escolha um carro livre e monte seu pedido.</span></div>
+            <div class="d-flex flex-wrap align-items-baseline gap-3"><span class="ds-code" style="width: 150px">Rótulo · 13/700</span><span class="form-label m-0">E-mail</span></div>
+            <div class="d-flex flex-wrap align-items-baseline gap-3"><span class="ds-code" style="width: 150px">Kicker · 12/700 caixa-alta</span><span class="r-kicker">Pronto para a estrada</span></div>
+            <div class="d-flex flex-wrap align-items-baseline gap-3"><span class="ds-code" style="width: 150px">Números · tabular</span><span class="r-num fw-bold">R$ 1.234,56</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MARCA -->
+    <section class="ds-sec" id="marca">
+      <h2 class="r-h2">Logo e marca</h2>
+      <div class="row g-3">
+        <div class="col-md-6"><div class="card h-100" style="background: #0E1726; color: #fff; border-color: #243047">
+          <a class="r-brand" style="font-size: 22px" href="#marca" id="logo-escuro"></a>
+          <div style="font-size: 13px; color: #AEB9CA; margin-top: 12px">Versão principal, sobre azul-marinho (#0E1726).</div>
+        </div></div>
+        <div class="col-md-6"><div class="card h-100">
+          <div class="d-flex align-items-center gap-2 fw-bolder" style="font-size: 22px" id="logo-claro"></div>
+          <div class="text-secondary" style="font-size: 13px; margin-top: 12px">Sobre fundo claro. Mantenha área livre de 12px ao redor e tamanho mínimo de 24px no símbolo.</div>
+        </div></div>
+      </div>
+      <p class="text-secondary mt-3 mb-0" style="font-size: 14px">Símbolo: quadrado arredondado (raio 9/32) em #2FB5A0 com silhueta de carro em #0E1726. Nome: “Rota Aluguel”, Saira 800. Tom de voz: direto e amigável (“Para onde vamos hoje?”).</p>
+    </section>
+
+    <!-- BOTÕES -->
+    <section class="ds-sec" id="botoes">
+      <h2 class="r-h2">Botões</h2>
+      <div class="card">
+        <div class="d-flex flex-wrap gap-3 align-items-center">
+          <button class="btn btn-primary" type="button">Primário</button>
+          <button class="btn btn-outline-secondary" type="button">Secundário</button>
+          <button class="btn btn-outline-danger" type="button">Perigo</button>
+          <span style="background: #0E1726; padding: 10px; border-radius: 12px"><button class="btn btn-aqua" type="button">Destaque (fundo escuro)</button></span>
+          <button class="btn btn-primary" type="button" disabled>Desabilitado</button>
+        </div>
+        <div class="r-chips mt-4" role="group" aria-label="Exemplo de chips">
+          <button class="btn chip active" aria-pressed="true" type="button">Todos</button>
+          <button class="btn chip" aria-pressed="false" type="button">Empresas</button>
+          <button class="btn chip" aria-pressed="false" type="button">Bancos</button>
+        </div>
+        <p class="text-secondary mt-3 mb-0" style="font-size: 13px">Altura mínima 44px (alvo de toque), raio 10px, texto 14/700. Primário: 1 por tela. Perigo: sempre com confirmação. Chips: filtros com <span class="ds-code">aria-pressed</span>.</p>
+      </div>
+    </section>
+
+    <!-- ÍCONES -->
+    <section class="ds-sec" id="icones">
+      <h2 class="r-h2">Ícones</h2>
+      <div class="card p-0"><div class="row row-cols-3 row-cols-md-5 g-0" id="icones-grade"></div></div>
+      <p class="text-secondary mt-3 mb-0" style="font-size: 13px">SVG inline de contorno, viewBox 24×24, traço 1,8 arredondado, <span class="ds-code">currentColor</span> (herdam a cor do texto). Tamanhos: 16 (apoio) e 20 (menu). Sempre <span class="ds-code">aria-hidden</span> com texto ao lado.</p>
+    </section>
+
+    <!-- ESPAÇAMENTOS -->
+    <section class="ds-sec" id="espacamentos">
+      <h2 class="r-h2">Espaçamentos</h2>
+      <div class="card">
+        <div class="d-flex flex-column gap-2" id="espacos"></div>
+        <p class="text-secondary mt-3 mb-0" style="font-size: 13px">Escala base 4px. Cards: 24px de padding. Grid de cartões: gap 24px (<span class="ds-code">g-4</span>). Página: 40×48px no desktop e 24×16px no celular.</p>
+      </div>
+    </section>
+
+    <!-- ARREDONDAMENTOS -->
+    <section class="ds-sec" id="arredondamentos">
+      <h2 class="r-h2">Arredondamentos</h2>
+      <div class="card">
+        <div class="d-flex flex-wrap gap-4" id="raios"></div>
+      </div>
+    </section>
+
+    <!-- ACESSIBILIDADE -->
+    <section class="ds-sec" id="acessibilidade">
+      <h2 class="r-h2">Diretrizes de acessibilidade</h2>
+      <div class="row g-3">
+        <div class="col-md-6"><div class="card h-100">
+          <h3 class="r-h2" style="font-size: 15px">Contraste (WCAG 2.1)</h3>
+          <table class="table r-num mb-0" style="font-size: 13px"><thead><tr><th>Par</th><th>Razão</th><th>AA</th></tr></thead><tbody id="contraste"></tbody></table>
+        </div></div>
+        <div class="col-md-6"><div class="card h-100">
+          <h3 class="r-h2" style="font-size: 15px">Regras</h3>
+          <ul class="mb-0 ps-3" style="font-size: 14px; line-height: 1.8">
+            <li>Texto normal com contraste mínimo de 4,5:1 (AA).</li>
+            <li>Alvos de toque com no mínimo 44×44px.</li>
+            <li>Os dois temas seguem a mesma regra de contraste; respeitam <span class="ds-code">prefers-color-scheme</span> e podem ser trocados pelo usuário.</li>
+            <li>Foco visível: contorno de 3px em #7FD1C4 (<span class="ds-code">:focus-visible</span>).</li>
+            <li>Status nunca só por cor: sempre com texto (“Livre”, “Reprovado”).</li>
+            <li>Campos com <span class="ds-code">label</span>; erros em <span class="ds-code">role="alert"</span>.</li>
+            <li>Imagens com <span class="ds-code">alt</span>; ícones decorativos com <span class="ds-code">aria-hidden</span>.</li>
+            <li>Animações respeitam <span class="ds-code">prefers-reduced-motion</span>.</li>
+            <li>HTML semântico, <span class="ds-code">lang="pt-BR"</span> e navegação por teclado.</li>
+          </ul>
+        </div></div>
+      </div>
+      <div class="card mt-3">
+        <h3 class="r-h2" style="font-size: 15px">Exemplo de campo acessível</h3>
+        <div style="max-width: 360px"><label class="form-label" for="ex-email">E-mail</label><input class="form-control" id="ex-email" type="email" placeholder="voce@exemplo.com"></div>
+      </div>
+    </section>
+
+    <footer class="text-secondary pt-5 pb-5 mb-4" style="font-size: 13px">Rota Aluguel · DIW · PUC Minas · Design System v1.1</footer>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script type="module">
+    import { LOGO, ICONES, icone } from '../js/ui.js';
+
+    const lum = (hex) => {
+      const [r, g, b] = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255)
+        .map((v) => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4));
+      return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+    };
+    const razao = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); };
+    const texto = (fundo) => (razao('#FFFFFF', fundo) >= razao('#101828', fundo) ? '#fff' : '#101828');
+    const $ = (id) => document.getElementById(id);
+
+    const PALETA = [
+      ['Primária', '#0A6B5E', '--bs-primary', 'Ações principais, links'],
+      ['Primária (hover)', '#085A4F', '--bs-link-hover-color', 'Hover e ativo'],
+      ['Aqua', '#2FB5A0', '--r-aqua', 'Destaque e marca'],
+      ['Menta', '#7FD1C4', '--r-mint', 'Anel de foco'],
+      ['Marinho', '#0E1726', '--r-navy', 'Barra lateral, hero'],
+      ['Marinho 2', '#1B2639', '--r-navy-2', 'Hover no menu'],
+      ['Perigo', '#8F1D1D', '--bs-danger', 'Erros e exclusão'],
+      ['Texto', '#101828', '--bs-body-color', 'Texto principal'],
+      ['Texto 2', '#344054', '--r-ink-2', 'Rótulos'],
+      ['Texto suave', '#475467', '--r-muted', 'Apoio'],
+      ['Borda', '#E1E6ED', '--bs-border-color', 'Bordas de card'],
+      ['Fundo', '#F3F5F7', 'body', 'Fundo da página'],
+    ];
+    $('paleta').innerHTML = PALETA.map(([n, h, v, uso]) => `
+      <div class="col"><div class="ds-sw">
+        <div class="ds-sw-cor" style="background:${h};color:${texto(h)}">${h}</div>
+        <div class="ds-sw-info"><b>${n}</b><span class="ds-code">${v}</span><br>${uso}</div>
+      </div></div>`).join('');
+
+    const ESCALAS = [
+      ['Verde-azulado', [['50', '#EAF7F3'], ['200', '#7FD1C4'], ['400', '#2FB5A0'], ['600', '#0A6B5E'], ['700', '#085A4F']]],
+      ['Marinho', [['900', '#0B1220'], ['800', '#0E1726'], ['700', '#1B2639'], ['600', '#243047'], ['400', '#6B7A90'], ['300', '#AEB9CA']]],
+      ['Neutros', [['900', '#101828'], ['700', '#344054'], ['600', '#475467'], ['500', '#667085'], ['400', '#98A2B3'], ['300', '#CBD2DC'], ['200', '#E1E6ED'], ['100', '#F3F5F7']]],
+    ];
+    $('escalas').innerHTML = ESCALAS.map(([n, passos]) => `
+      <div><div class="fw-bold mb-2" style="font-size: 14px">${n}</div>
+      <div class="ds-esc">${passos.map(([k, h]) => `<div style="background:${h};color:${texto(h)}" title="${h}">${k}</div>`).join('')}</div></div>`).join('');
+
+    const STATUS = [['Em análise', '#FFF1D6', '#7A4A00'], ['Aprovado', '#DCEBFF', '#0B3F8F'], ['Reprovado', '#FDE2E2', '#8F1D1D'], ['Contratado', '#D9F2E6', '#0B5B3A'], ['Cancelado', '#E6E9EE', '#3B4656']];
+    $('status').innerHTML = STATUS.map(([n, f, c]) => `<span class="badge rounded-pill r-status" style="background:${f};color:${c}">${n}</span>`).join('');
+
+    const TOKENS = [
+      ['--bs-body-bg', 'Superfície (cards)', '#FFFFFF', '#131C2E'],
+      ['--r-bg', 'Fundo da página', '#F3F5F7', '#0B1220'],
+      ['--r-text', 'Texto', '#101828', '#E6EBF1'],
+      ['--r-muted', 'Texto suave', '#475467', '#AEB9CA'],
+      ['--bs-border-color', 'Bordas', '#E1E6ED', '#243047'],
+      ['--r-action', 'Ação (botão primário)', '#0A6B5E', '#2FB5A0'],
+      ['--bs-link-color', 'Links', '#0A6B5E', '#5FCBB9'],
+      ['--r-danger-text', 'Perigo / erro', '#8F1D1D', '#F2A0A0'],
+      ['--r-tint', 'Seleção (fundo)', '#EAF7F3', '#0F2E2C'],
+    ];
+    $('temas-tab').innerHTML = TOKENS.map(([v, u, c, e]) => `<tr><td class="ds-code">${v}</td><td>${u}</td>
+      <td><span class="r-bolinha" style="background:${c};vertical-align:-3px"></span> <span class="ds-code">${c}</span></td>
+      <td><span class="r-bolinha" style="background:${e};vertical-align:-3px"></span> <span class="ds-code">${e}</span></td></tr>`).join('');
+
+    $('logo-escuro').innerHTML = `${LOGO} Rota Aluguel`;
+    $('logo-claro').innerHTML = `${LOGO} Rota Aluguel`;
+
+    $('icones-grade').innerHTML = Object.keys(ICONES).map((k) => `<div class="col"><div class="ds-ico">${icone(k, 28)}<span class="ds-code">${k}</span></div></div>`).join('');
+
+    $('espacos').innerHTML = [4, 8, 12, 16, 24, 32, 48].map((p) => `
+      <div class="d-flex align-items-center gap-3"><span class="ds-code" style="width: 40px">${p}px</span><div class="ds-box" style="width:${p}px;height:20px"></div></div>`).join('');
+
+    $('raios').innerHTML = [['6px', 'Placa'], ['10px', 'Botões e campos'], ['16px', 'Cards'], ['20px', 'Hero'], ['999px', 'Chips e badges']].map(([r, n]) => `
+      <div><div class="ds-rad" style="border-radius:${r}"></div><div class="fw-bold mt-2" style="font-size: 13px">${r}</div><div class="text-secondary" style="font-size: 12px">${n}</div></div>`).join('');
+
+    const PARES = [['#101828', '#FFFFFF', 'Texto sobre branco'], ['#475467', '#FFFFFF', 'Texto suave sobre branco'], ['#FFFFFF', '#0A6B5E', 'Botão primário'], ['#0E1726', '#2FB5A0', 'Botão aqua'], ['#FFFFFF', '#0E1726', 'Texto sobre marinho'], ['#8F1D1D', '#FDE2E2', 'Erro / reprovado'], ['#E6EBF1', '#131C2E', 'Escuro: texto sobre card'], ['#AEB9CA', '#131C2E', 'Escuro: texto suave'], ['#0E1726', '#2FB5A0', 'Escuro: botão primário'], ['#F2A0A0', '#3A1618', 'Escuro: erro']];
+    $('contraste').innerHTML = PARES.map(([f, b, n]) => {
+      const r = razao(f, b);
+      return `<tr><td><span class="r-bolinha" style="background:${b};vertical-align:-3px"></span> ${n}</td><td>${r.toFixed(2)}:1</td><td>${r >= 4.5 ? 'Passa' : 'Falha'}</td></tr>`;
+    }).join('');
+  </script>
+</body>
+</html>

@@ -65,6 +65,8 @@ export const ICONES = {
   empresa: 'M3 21V7l9-4 9 4v14M9 21v-6h6v6',
   banco: 'M3 10l9-6 9 6M5 10v8M9 10v8M15 10v8M19 10v8M3 21h18',
   cliente: 'M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8z',
+  sol: 'M12 17a5 5 0 100-10 5 5 0 000 10zM12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4',
+  lua: 'M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z',
 };
 
 export const icone = (nome, tamanho = 20) =>
@@ -112,6 +114,7 @@ export function renderShell(ativo) {
     <nav aria-label="Principal"><ul class="nav nav-pills flex-column r-menu">${menu}</ul></nav>
     <div class="r-aside-pe">
       <div class="r-user"><div class="r-user-nome">${esc(sessao.nome)}</div><div class="r-user-papel">${papel}</div></div>
+      <button class="nav-link r-nav" style="color:#C5CEDB" type="button" id="btn-tema"></button>
       <button class="nav-link r-nav" style="color:#C5CEDB" type="button" id="btn-sair">${icone('sair')} Sair</button>
     </div>`;
 
@@ -127,6 +130,13 @@ export function renderShell(ativo) {
       </header>`
     );
   }
+  const btnTema = document.getElementById('btn-tema');
+  const atualizarTema = () => {
+    btnTema.innerHTML = `${window.Tema.iconeSvg(20)} ${window.Tema.rotulo()}`;
+  };
+  btnTema.addEventListener('click', () => window.Tema.alternar());
+  document.addEventListener('tema', atualizarTema);
+  atualizarTema();
   document.getElementById('btn-sair').addEventListener('click', logout);
   mostrarAvisoPendente();
 }
