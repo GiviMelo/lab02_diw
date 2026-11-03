@@ -13,6 +13,9 @@
   }
 
   function atual() {
+    // ?tema=light|dark força o tema só nesta carga (útil para gerar o PDF em tema claro).
+    var q = /[?&]tema=(light|dark)\b/.exec(location.search);
+    if (q) return q[1];
     var g = guardado();
     if (g === 'light' || g === 'dark') return g;
     return window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';

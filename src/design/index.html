@@ -12,6 +12,13 @@
   <style>
     /* Os cartões daqui não usam .card-body: o espaçamento interno vem do próprio .card (.p-0 o remove). */
     .card { padding: var(--bs-card-spacer-y) var(--bs-card-spacer-x); }
+    @media print {
+      .ds-nav, .r-tema-flutuante { display: none !important; }
+      * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .ds-sec { padding-top: 24px; }
+      h2.r-h2 { break-after: avoid; }
+      .card, .ds-sw { break-inside: avoid; }
+    }
     .ds-nav { position: sticky; top: 0; z-index: 10; background: #0E1726; }
     .ds-nav a { color: #C5CEDB; text-decoration: none; font-size: 13px; font-weight: 600; padding: 8px 14px; border-radius: 999px; white-space: nowrap; }
     .ds-nav a:hover { background: #1B2639; color: #fff; }
