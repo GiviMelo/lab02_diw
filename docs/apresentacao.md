@@ -27,7 +27,7 @@ Antes, rodar `npm start` e abrir http://localhost:3000. Para começar com dados 
 3. **Meu perfil:** mostrar a carteira do locatário e o máximo de **3 rendimentos**.
 4. **Sair → Banco**. Abrir **Pedidos recebidos** → **Ver detalhes**. Mostrar a renda declarada, tentar aprovar sem parecer (erro) e depois aprovar com parecer.
 5. **Executar contrato:** escolher a propriedade do automóvel (cliente, empresa ou banco). Mostrar a **chave de crédito**: ligada calcula a parcela pela Tabela Price; desligada, o contrato fica sem crédito. Confirmar.
-6. Mostrar o **histórico** do pedido e, rapidamente, o **CRUD de clientes** e o **cadastro de automóvel** com prévia.
+6. Mostrar o **histórico** do pedido e, rapidamente, o **CRUD de clientes** e o **cadastro de automóvel**: digitar marca e modelo (ex.: Renault Kwid) e clicar em **Buscar foto na Wikipédia**. A foto chega com autor e licença. Precisa de internet.
 7. (Opcional) Diminuir a janela: o menu vira **Offcanvas** no celular.
 
 ## 4. Modelo × código: o que mudou e por quê (3 min)

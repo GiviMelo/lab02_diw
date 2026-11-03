@@ -40,16 +40,16 @@ O sistema apoia a gestão de aluguéis de automóveis pela Internet e só pode s
 - **Clientes** (usuários individuais) introduzem, modificam, consultam e cancelam pedidos de aluguel.
 - **Agentes** (empresas e bancos) modificam e avaliam pedidos. Depois de uma análise financeira positiva, executam o contrato. Os bancos vinculam um **contrato de crédito** ao aluguel.
 
-Do contratante guardam-se RG, CPF, nome, endereço, profissão e as entidades empregadoras com os rendimentos (**máximo 3**). Do automóvel guardam-se matrícula, ano, marca, modelo e placa, além da carroceria e da cor usadas na ilustração. Conforme o tipo de contrato, o automóvel é registrado como propriedade do **cliente, de uma empresa ou de um banco**.
+Do contratante guardam-se RG, CPF, nome, endereço, profissão e as entidades empregadoras com os rendimentos (**máximo 3**). Do automóvel guardam-se matrícula, ano, marca, modelo e placa, além da **foto real** (com autor e licença), da carroceria e da cor. Conforme o tipo de contrato, o automóvel é registrado como propriedade do **cliente, de uma empresa ou de um banco**.
 
-A interface segue o protótipo **Rota Aluguel**: barra lateral escura, cards com ilustração dos carros, placa Mercosul, "Carteira do locatário" e "Credencial de agente".
+A interface segue o protótipo **Rota Aluguel**: barra lateral escura, cards com **fotos reais dos carros**, placa Mercosul, "Carteira do locatário" e "Credencial de agente".
 
 ---
 
 ## ✨ Funcionalidades Principais
 
 - 🔐 **Entrar e criar conta**, com contas de demonstração e cadastro rápido. O cliente completa o perfil depois.
-- 🚘 **Frota**: cards com ilustração, placa, proprietário e selo Livre/Reservado, com filtro por proprietário.
+- 🚘 **Frota**: cards com foto real, placa, proprietário e selo Livre/Reservado, com filtro por proprietário.
 - 📝 **Pedidos**: escolher um carro livre no período, ver o resumo com a duração, editar enquanto "Em análise", cancelar e acompanhar o histórico.
 - 📊 **Painel de pedidos**: indicadores por status, filtro por status e tabela.
 - 💰 **Avaliação financeira**: o agente vê a renda declarada e aprova ou reprova com parecer obrigatório.
@@ -152,6 +152,8 @@ Abra **http://localhost:3000** no navegador. A API fica em `http://localhost:300
 
 > Para voltar aos dados iniciais, restaure o `db.json` com `git checkout db.json`.
 
+> Se quiser editar o `db.json` à mão com o servidor rodando, use `npm run start:watch`. O `npm start` não usa `--watch` de propósito (veja "Decisões e Limitações").
+
 ---
 
 ## 📂 Estrutura de Pastas
@@ -171,13 +173,14 @@ Abra **http://localhost:3000** no navegador. A API fica em `http://localhost:300
     │   pedido-detalhe.html, clientes.html, cliente-form.html, perfil-agente.html,
     │   automoveis.html, automovel-form.html, index.html
     ├── css/rota.css             # tema do protótipo sobre o Bootstrap
+    ├── img/carros/              # fotos dos automóveis do db.json (Wikimedia Commons)
     └── js/
         ├── api.js               # Fetch API
         ├── auth.js              # sessão e perfis
         ├── servicos.js          # regras de negócio
         ├── validators.js        # CPF, CNPJ, placa, e-mail, automóvel
         ├── ui.js                # barra lateral, avisos, chips, badges, formatação
-        ├── carros.js            # ilustração SVG dos carros e placa Mercosul
+        ├── carros.js            # fotos dos carros, busca na Wikipédia, ilustração de reserva e placa
         └── pages/*.js           # um controlador por página
 ```
 
@@ -197,7 +200,7 @@ Abra **http://localhost:3000** no navegador. A API fica em `http://localhost:300
 | **Executar contrato (crédito opcional)** | **Credencial de agente** |
 | <img src="docs/screenshots/07-executar-contrato.jpg" alt="Execução de contrato com propriedade do automóvel e chave de crédito opcional pela Tabela Price" width="400"> | <img src="docs/screenshots/08-perfil-agente.jpg" alt="Perfil do agente com a credencial" width="400"> |
 | **Automóvel com prévia** | **Menu no celular (Offcanvas)** |
-| <img src="docs/screenshots/09-automovel.jpg" alt="Formulário de automóvel com carroceria, cor e prévia" width="400"> | <img src="docs/screenshots/10-menu-celular.jpg" alt="Menu lateral aberto como Offcanvas na tela do celular" width="180"> |
+| <img src="docs/screenshots/09-automovel.jpg" alt="Formulário de automóvel com busca de foto na Wikipédia, carroceria, cor e prévia" width="400"> | <img src="docs/screenshots/10-menu-celular.jpg" alt="Menu lateral aberto como Offcanvas na tela do celular" width="180"> |
 
 ### Contas de teste
 
@@ -242,6 +245,9 @@ Os testes foram manuais, com o app rodando no navegador e o JSON Server ativo. F
 - **JSON Server 0.17:**
   - O `_expand=automovel` não funciona, porque a biblioteca de plural gera `automovels`. Por isso o automóvel é anexado ao pedido no código.
   - Os campos `...Id` nunca são gravados como `null`, porque isso quebra os `DELETE`.
+  - Com `--watch`, o servidor reiniciava ao perceber as próprias gravações no `db.json`. Uma ação com várias gravações seguidas, como "Executar contrato", perdia a conexão no meio. Por isso o `npm start` roda sem `--watch`.
+  - Não há transações: se uma etapa de "Executar contrato" falhar, as anteriores são desfeitas (crédito e contrato removidos, proprietário do carro restaurado).
+- **Fotos dos automóveis:** os 7 carros iniciais usam fotos do **Wikimedia Commons** salvas em `src/img/carros` (funcionam sem internet). No cadastro de automóvel, o botão **"Buscar foto na Wikipédia"** consulta a API pública da Wikipédia (MediaWiki, com CORS) pela marca e modelo e grava o endereço da foto com autor e licença. Também é possível colar o endereço de qualquer imagem `https`. Sem foto, ou se a imagem não carregar, aparece a ilustração do carro na carroceria e cor escolhidas. A tela de login mantém a ilustração animada do protótipo.
 - **Protótipo × requisitos:** onde o protótipo não cobria um requisito do enunciado, a funcionalidade foi mantida no mesmo estilo visual:
   - o agente modifica pedidos;
   - o agente cadastra um cliente com e-mail e senha de acesso;
@@ -256,6 +262,23 @@ Os testes foram manuais, com o app rodando no navegador e o JSON Server ativo. F
 - [Fetch API (MDN)](https://developer.mozilla.org/pt-BR/docs/Web/API/Fetch_API)
 - [Diagrama de Pacotes](https://www.uml-diagrams.org/package-diagrams.html)
 - [PlantUML](https://plantuml.com/pt/)
+- [API da Wikipédia (MediaWiki)](https://www.mediawiki.org/wiki/API:Main_page)
+
+### Créditos das fotos
+
+Fotos do [Wikimedia Commons](https://commons.wikimedia.org/), usadas conforme as licenças Creative Commons indicadas (redimensionadas para 960 px):
+
+| Automóvel | Autor | Licença |
+|-----------|-------|---------|
+| [Fiat Argo](https://commons.wikimedia.org/wiki/File:Fiat_Argo_2017b_(cropped).jpg) | JasonVogel | CC BY-SA 4.0 |
+| [Volkswagen Polo](https://commons.wikimedia.org/wiki/File:VW_Polo_beats_(VI)_%E2%80%93_f_03032019.jpg) | M 93 | CC BY-SA 3.0 DE |
+| [Chevrolet Onix Plus](https://commons.wikimedia.org/wiki/File:2023_Chevrolet_Onix_Plus_1.0T_Premier_AT.jpg) | Just a Man | CC BY 4.0 |
+| [Hyundai HB20](https://commons.wikimedia.org/wiki/File:Hyundai_HB20_Comfort_Plus_2025.jpg) | Just a Man | CC BY 4.0 |
+| [Toyota Corolla](https://commons.wikimedia.org/wiki/File:2022_Toyota_Corolla_Altis_1.8G_Prestige_front.jpg) | LuvsMG481 | CC BY-SA 4.0 |
+| [Jeep Renegade](https://commons.wikimedia.org/wiki/File:Jeep_Renegade_1.6_MultiJet_2WD_Longitude_%E2%80%93_Frontansicht,_9._November_2014,_D%C3%BCsseldorf.jpg) | M 93 | CC BY-SA 3.0 DE |
+| [Fiat Strada](https://commons.wikimedia.org/wiki/File:Fiat_Strada_2020_Volcano_in_Montevideo_(front).jpg) | NaBUru38 | CC BY-SA 4.0 |
+
+O autor e a licença também aparecem na própria aplicação (legenda no detalhe do pedido e no cadastro, e ao passar o mouse sobre a foto).
 
 ---
 

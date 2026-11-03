@@ -1,7 +1,7 @@
 import { exigirPerfil } from '../auth.js';
 import { renderShell, esc, toast, confirmar, mostrarErros, mensagensDe } from '../ui.js';
 import { listarAutomoveis, listarAgentes, listarClientes, excluirAutomovel } from '../servicos.js';
-import { forma, corNome } from '../carros.js';
+import { forma, corNome, fotoCarro } from '../carros.js';
 
 const sessao = exigirPerfil(['agente']);
 const conteudo = document.getElementById('conteudo');
@@ -18,7 +18,7 @@ function renderLinhas() {
   document.getElementById('linhas').innerHTML = carros
     .map(
       (c) => `<tr>
-        <td><div style="font-weight: 700">${esc(c.marca)} ${esc(c.modelo)}</div><div style="font-size: 12px; color: #475467">${forma(c.forma).label} · ${c.ano} · ${esc(c.matricula)}</div></td>
+        <td><div class="d-flex align-items-center gap-3">${fotoCarro(c, { classe: 'r-foto-mini' })}<div><div style="font-weight: 700">${esc(c.marca)} ${esc(c.modelo)}</div><div style="font-size: 12px; color: #475467">${forma(c.forma).label} · ${c.ano} · ${esc(c.matricula)}</div></div></div></td>
         <td style="font-weight: 700; letter-spacing: 0.06em">${esc(c.placa)}</td>
         <td><span style="display: inline-flex; align-items: center; gap: 8px"><span class="r-bolinha" style="background: ${/^#[0-9a-f]{6}$/i.test(c.cor) ? c.cor : '#C5CEDB'}"></span>${corNome(c.cor)}</span></td>
         <td>${esc(nomeDono(c))}</td>

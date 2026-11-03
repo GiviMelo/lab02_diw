@@ -1,7 +1,7 @@
 import { exigirPerfil } from '../auth.js';
 import { renderShell, esc, dataBR, parametro, mostrarErros, mensagensDe, irPara } from '../ui.js';
 import { obterPedido, salvarPedido, listarLivresNoPeriodo, podeEditar, diasEntre, hoje } from '../servicos.js';
-import { forma, corNome, carroSvg } from '../carros.js';
+import { forma, corNome, fotoCarro } from '../carros.js';
 
 const sessao = exigirPerfil();
 const conteudo = document.getElementById('conteudo');
@@ -27,9 +27,12 @@ function renderLivres() {
   caixa.innerHTML = livres
     .map(
       (c) => `<button type="button" class="r-opcao" data-carro="${c.id}" aria-pressed="${c.id === carroSel}">
-        <span class="d-flex flex-column gap-1 text-start">
-          <span style="font-size: 16px; font-weight: 800">${esc(c.marca)} ${esc(c.modelo)}</span>
-          <span class="text-secondary" style="font-size: 13px">${forma(c.forma).label} · ${corNome(c.cor)} · ${c.ano}</span>
+        <span class="d-flex align-items-center gap-3 text-start">
+          ${fotoCarro(c, { classe: 'r-foto-mini' })}
+          <span class="d-flex flex-column gap-1">
+            <span style="font-size: 16px; font-weight: 800">${esc(c.marca)} ${esc(c.modelo)}</span>
+            <span class="text-secondary" style="font-size: 13px">${forma(c.forma).label} · ${corNome(c.cor)} · ${c.ano}</span>
+          </span>
         </span>
         <span style="font-weight: 800; letter-spacing: 0.08em; font-size: 14px">${esc(c.placa)}</span>
       </button>`
@@ -43,7 +46,7 @@ function renderResumo() {
   const n = diasEntre(ini, fim);
   const carro = livres.find((c) => c.id === carroSel);
   $('erro-data').hidden = !(ini && fim && n <= 0);
-  $('res-carro').innerHTML = carro ? carroSvg(carro.forma, carro.cor) : carroSvg('sedan', '#C5CEDB');
+  $('res-carro').innerHTML = fotoCarro(carro ?? { forma: 'sedan', cor: '#C5CEDB' });
   $('res-nome').textContent = carro ? `${carro.marca} ${carro.modelo}` : 'Não escolhido';
   $('res-ini').textContent = dataBR(ini);
   $('res-fim').textContent = dataBR(fim);
@@ -107,10 +110,7 @@ async function iniciar() {
       </div>
       <aside class="col-12 col-xl-4">
         <div class="card card-body gap-3">
-          <div class="r-palco r-palco-resumo">
-            <div style="width: 85%; margin: 0 auto -2px" id="res-carro"></div>
-            <div class="r-palco-chao"></div>
-          </div>
+          <div id="res-carro"></div>
           <h2 class="r-h2 m-0">Resumo</h2>
           <dl class="row g-0 gy-2 m-0" style="font-size: 14px">
             ${linhaResumo('Automóvel', 'res-nome')}

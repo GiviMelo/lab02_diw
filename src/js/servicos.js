@@ -195,7 +195,14 @@ export async function salvarAutomovel(dados, id = null) {
     proprietarioTipo: dados.proprietarioTipo,
     proprietarioId: Number(dados.proprietarioId),
   };
-  return id ? api.atualizar(`/automoveis/${id}`, corpo) : api.criar('/automoveis', corpo);
+  // Foto é opcional; sem ela a interface usa a ilustração. Na edição, PUT para que remover a foto apague os campos.
+  const foto = dados.foto?.trim();
+  if (foto) {
+    corpo.foto = foto;
+    if (dados.fotoCredito) corpo.fotoCredito = dados.fotoCredito;
+    if (dados.fotoFonte) corpo.fotoFonte = dados.fotoFonte;
+  }
+  return id ? api.substituir(`/automoveis/${id}`, corpo) : api.criar('/automoveis', corpo);
 }
 
 export async function excluirAutomovel(id) {
@@ -364,46 +371,75 @@ export async function executarContrato(sessao, pedido, dados) {
   }
   lancarSeErros(erros);
 
+  // O JSON Server não tem transações: são 4 gravações seguidas. Se alguma falhar no meio,
+  // desfazemos as anteriores para não sobrar crédito/contrato "solto" com o pedido ainda aprovado.
+  const carroOriginal = await api.obter(`/automoveis/${pedido.automovelId}`);
   let creditoId = null;
-  let detalhe = null;
-  if (dados.credito) {
-    const valor = Number(dados.credito.valor);
-    const parcelas = Number(dados.credito.parcelas);
-    const taxaMensal = Number(dados.credito.taxaMensal);
-    const valorParcela = Number(calcularParcela(valor, parcelas, taxaMensal).toFixed(2));
-    const c = await api.criar('/creditos', {
-      bancoId: sessao.perfilId,
+  let contratoId = null;
+  let carroAlterado = false;
+  try {
+    let detalhe = null;
+    if (dados.credito) {
+      const valor = Number(dados.credito.valor);
+      const parcelas = Number(dados.credito.parcelas);
+      const taxaMensal = Number(dados.credito.taxaMensal);
+      const valorParcela = Number(calcularParcela(valor, parcelas, taxaMensal).toFixed(2));
+      const c = await api.criar('/creditos', {
+        bancoId: sessao.perfilId,
+        pedidoId: pedido.id,
+        valor,
+        parcelas,
+        taxaMensal,
+        valorParcela,
+        dataConcessao: agora(),
+      });
+      creditoId = c.id;
+      const fmt = (v) => v.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      detalhe = `Crédito de R$ ${fmt(valor)} em ${parcelas}x de R$ ${fmt(valorParcela)}`;
+    }
+
+    const proprietarioId = dados.tipoPropriedade === 'cliente' ? pedido.clienteId : Number(dados.proprietarioId);
+    // creditoId fica ausente (e não null) quando não há crédito; ver comentário em salvarPedido.
+    const contrato = await api.criar('/contratos', {
       pedidoId: pedido.id,
-      valor,
-      parcelas,
-      taxaMensal,
-      valorParcela,
-      dataConcessao: agora(),
+      agenteId: sessao.perfilId,
+      tipoPropriedade: dados.tipoPropriedade,
+      proprietarioId,
+      ...(creditoId ? { creditoId } : {}),
+      dataExecucao: agora(),
     });
-    creditoId = c.id;
-    const fmt = (v) => v.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    detalhe = `Crédito de R$ ${fmt(valor)} em ${parcelas}x de R$ ${fmt(valorParcela)}`;
+    contratoId = contrato.id;
+
+    await api.atualizar(`/automoveis/${pedido.automovelId}`, {
+      proprietarioTipo: dados.tipoPropriedade,
+      proprietarioId,
+    });
+    carroAlterado = true;
+
+    return await api.atualizar(`/pedidos/${pedido.id}`, {
+      status: STATUS.CONTRATADO,
+      contratoId,
+      historico: registrar(pedido, sessao.nome, 'Contrato executado', detalhe),
+    });
+  } catch (err) {
+    const desfazer = [];
+    if (carroAlterado) {
+      desfazer.push(() =>
+        api.atualizar(`/automoveis/${pedido.automovelId}`, {
+          proprietarioTipo: carroOriginal.proprietarioTipo,
+          proprietarioId: carroOriginal.proprietarioId,
+        })
+      );
+    }
+    if (contratoId) desfazer.push(() => api.remover(`/contratos/${contratoId}`));
+    if (creditoId) desfazer.push(() => api.remover(`/creditos/${creditoId}`));
+    for (const passo of desfazer) {
+      try {
+        await passo();
+      } catch {
+        /* melhor esforço: o erro original é o que importa para o usuário */
+      }
+    }
+    throw new ErroValidacao(['Não foi possível executar o contrato. Nada foi alterado; tente novamente.']);
   }
-
-  const proprietarioId = dados.tipoPropriedade === 'cliente' ? pedido.clienteId : Number(dados.proprietarioId);
-  // creditoId fica ausente (e não null) quando não há crédito; ver comentário em salvarPedido.
-  const contrato = await api.criar('/contratos', {
-    pedidoId: pedido.id,
-    agenteId: sessao.perfilId,
-    tipoPropriedade: dados.tipoPropriedade,
-    proprietarioId,
-    ...(creditoId ? { creditoId } : {}),
-    dataExecucao: agora(),
-  });
-
-  await api.atualizar(`/automoveis/${pedido.automovelId}`, {
-    proprietarioTipo: dados.tipoPropriedade,
-    proprietarioId,
-  });
-
-  return api.atualizar(`/pedidos/${pedido.id}`, {
-    status: STATUS.CONTRATADO,
-    contratoId: contrato.id,
-    historico: registrar(pedido, sessao.nome, 'Contrato executado', detalhe),
-  });
 }

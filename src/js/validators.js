@@ -80,6 +80,9 @@ export function validarAgente(a) {
 
 export const FORMAS_VALIDAS = ['hatch', 'sedan', 'suv', 'picape'];
 
+// Foto: arquivo local da pasta img/carros ou endereço https (Wikipédia, etc.).
+export const fotoValida = (url) => /^(img\/carros\/[\w.-]+|https:\/\/[^\s"'<>]+)$/.test(url ?? '');
+
 export function validarAutomovel(a) {
   const erros = [];
   if (!a.marca?.trim()) erros.push('Informe a marca.');
@@ -91,5 +94,6 @@ export function validarAutomovel(a) {
   if (!a.matricula?.trim()) erros.push('Informe a matrícula.');
   if (!FORMAS_VALIDAS.includes(a.forma)) erros.push('Escolha o tipo de carroceria.');
   if (!/^#[0-9a-f]{6}$/i.test(a.cor ?? '')) erros.push('Escolha a cor do automóvel.');
+  if (a.foto?.trim() && !fotoValida(a.foto.trim())) erros.push('Foto inválida: use um endereço https ou um arquivo de img/carros.');
   return erros;
 }

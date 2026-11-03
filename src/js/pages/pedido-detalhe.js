@@ -8,7 +8,7 @@ import {
   obterPedido, listarAgentes, cancelarPedido, avaliarPedido, executarContrato,
   calcularParcela, creditoValido, podeEditar, podeCancelar, rendaTotal, STATUS,
 } from '../servicos.js';
-import { forma, corNome, carroSvg } from '../carros.js';
+import { forma, corNome, fotoCarro, creditoFoto } from '../carros.js';
 
 const sessao = exigirPerfil();
 const conteudo = document.getElementById('conteudo');
@@ -135,11 +135,8 @@ async function render() {
     </header>
     <div class="row g-4 align-items-start">
       <div class="col-12 col-xl-8 d-flex flex-column gap-4">
-        <section class="card overflow-hidden">
-          <div class="r-palco r-palco-detalhe">
-            <div style="width: 60%; max-width: 360px; margin: 0 auto -2px">${carroSvg(c.forma, c.cor)}</div>
-            <div class="r-palco-chao"></div>
-          </div>
+        <section class="card card-body">
+          <div style="max-width: 640px; width: 100%; margin: 0 auto">${fotoCarro(c, { classe: 'r-foto-detalhe' })}${creditoFoto(c)}</div>
         </section>
         <section class="card card-body">
           <h2 class="r-h2">Dados do aluguel</h2>

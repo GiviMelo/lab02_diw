@@ -107,3 +107,18 @@ Revisão feita após uma avaliação crítica do trabalho com base nos critério
 |---|---------|--------|
 | 1 | A interface passou a ser montada com **componentes do Bootstrap 5**: `btn`, `card`, `form-control`/`form-select`/`form-label`, `table`, `badge`, `alert`, `nav-pills`, `row`/`col`, Toast, Modal, Collapse, `form-switch` e Offcanvas | O enunciado pede a interface em Bootstrap 5. Na v3 quase todo o visual vinha de CSS próprio. Agora o tema `rota.css` só ajusta as variáveis `--bs-*` dos componentes. |
 | 2 | No celular, a barra lateral virou um **Offcanvas** aberto por um botão de menu | A barra lateral do protótipo ocupava muito espaço em telas pequenas. |
+
+## Correção encontrada em teste (v4)
+
+| # | Mudança | Motivo |
+|---|---------|--------|
+| 1 | `npm start` passou a rodar o JSON Server **sem `--watch`** (`npm run start:watch` continua disponível) | Com `--watch`, o servidor reiniciava ao detectar as próprias gravações. Ao executar um contrato com crédito, o crédito e o contrato eram gravados, o servidor reiniciava e as duas últimas gravações falhavam ("Não foi possível conectar ao servidor"). |
+| 2 | `executarContrato` desfaz as gravações anteriores se uma etapa falhar | O JSON Server não tem transações. Sem isso, sobravam crédito e contrato "soltos" com o pedido ainda "Aprovado". No diagrama de sequência, as 4 gravações formam uma unidade: ou todas acontecem, ou nenhuma. |
+
+## Fotos reais dos automóveis (v4)
+
+| # | Mudança | Motivo |
+|---|---------|--------|
+| 1 | `Automovel` ganhou `foto`, `fotoCredito` e `fotoFonte` (opcionais, `[0..1]` no diagrama de classes) | Os cards passaram a mostrar fotos reais em vez da ilustração. Crédito e fonte guardam o autor e a licença, que as licenças Creative Commons exigem citar. |
+| 2 | Novo serviço externo no diagrama de componentes: **API da Wikipédia / Wikimedia Commons** | O cadastro de automóvel busca a foto pela marca e modelo (`pageimages`) e o autor/licença (`imageinfo`). Os carros iniciais usam cópias locais em `src/img/carros`, então a aplicação funciona sem internet. |
+| 3 | A ilustração (`forma` + `cor`) virou **reserva**: aparece quando o carro não tem foto ou a imagem não carrega. A tela de login mantém a ilustração animada do protótipo | Nenhum carro fica sem imagem, mesmo com um endereço quebrado. |

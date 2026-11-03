@@ -1,7 +1,7 @@
 import { exigirPerfil } from '../auth.js';
 import { renderShell, esc, badgeLivre, icone, chipsHtml, ligarChips, mostrarErros, mensagensDe } from '../ui.js';
 import { listarAutomoveis, listarAgentes, automoveisEmUso } from '../servicos.js';
-import { forma, carroSvg, palco, placaHtml } from '../carros.js';
+import { forma, fotoCarro, placaHtml } from '../carros.js';
 
 const sessao = exigirPerfil();
 const ehCliente = sessao?.perfil === 'cliente';
@@ -27,7 +27,7 @@ function cardCarro(c) {
   return `
     <div class="col">
       <article class="card h-100 lift r-carro">
-        ${palco(c.forma, c.cor)}
+        ${fotoCarro(c)}
         <div class="d-flex justify-content-between align-items-start gap-2">${placaHtml(c.placa)}${badgeLivre(livre)}</div>
         <div>
           <div style="font-size: 20px; font-weight: 800; letter-spacing: -0.01em">${esc(c.marca)} ${esc(c.modelo)}</div>
@@ -46,17 +46,20 @@ function renderGrade() {
     : '<div class="col-12"><div class="card r-vazio">Nenhum automóvel nesta categoria.</div></div>';
 }
 
-// Carro do banner: troca a cada segundo, como no protótipo.
+// Banner: as fotos se alternam com um esmaecimento, como o carro trocando no protótipo.
 function iniciarHero() {
+  const caixa = document.getElementById('hero-carro');
+  caixa.innerHTML = carros.map((c) => fotoCarro(c)).join('');
+  const fotos = [...caixa.children];
   let i = 0;
   const mostrar = () => {
     const c = carros[i % carros.length];
-    document.getElementById('hero-carro').innerHTML = carroSvg(c.forma, c.cor);
+    fotos.forEach((f, k) => f.classList.toggle('ativa', k === i % carros.length));
     document.getElementById('hero-nome').textContent = `${c.marca} ${c.modelo} · ${forma(c.forma).label}`;
     i += 1;
   };
   mostrar();
-  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) setInterval(mostrar, 1000);
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) setInterval(mostrar, 3000);
 }
 
 async function iniciar() {
@@ -79,8 +82,8 @@ async function iniciar() {
         <a class="btn btn-aqua" href="${ehCliente ? 'pedido-form.html' : 'pedidos.html'}">${ehCliente ? 'Começar um pedido' : 'Ver pedidos recebidos'}</a>
       </div>
       <div style="flex: 1 1 320px; max-width: 460px; align-self: flex-end">
-        <div style="width: 82%; margin: 0 auto -2px" id="hero-carro"></div>
-        <div class="text-center" style="font-size: 12px; font-weight: 700; color: #AEB9CA; padding-bottom: 8px" id="hero-nome" aria-live="off"></div>
+        <div class="r-hero-foto" id="hero-carro"></div>
+        <div class="text-center" style="font-size: 12px; font-weight: 700; color: #AEB9CA; padding: 10px 0 8px" id="hero-nome" aria-live="off"></div>
         <div style="background: #1B2639; margin: 0 -36px; padding-top: 20px"><div class="dash"></div><div style="height: 20px"></div></div>
       </div>
     </section>
@@ -93,7 +96,8 @@ async function iniciar() {
         ${chipsHtml([['todos', 'Todos'], ['empresa', 'Empresas'], ['banco', 'Bancos'], ['cliente', 'Particulares']], filtro)}
       </div>
     </header>
-    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4" id="grade"></div>`;
+    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4" id="grade"></div>
+    <p class="r-foto-credito mt-4">Fotos: Wikimedia Commons, licenças Creative Commons. Passe o mouse sobre uma foto para ver o autor.</p>`;
   ligarChips(document.getElementById('filtros'), (v) => {
     filtro = v;
     renderGrade();

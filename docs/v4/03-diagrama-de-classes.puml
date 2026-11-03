@@ -70,6 +70,9 @@ class Automovel {
   - placa : String
   - forma : Carroceria
   - cor : String
+  - foto : String [0..1]
+  - fotoCredito : String [0..1]
+  - fotoFonte : String [0..1]
   - proprietarioTipo : TipoPropriedade
   - proprietarioId : int
 }

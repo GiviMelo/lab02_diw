@@ -195,6 +195,13 @@ textarea.form-control { resize: vertical; }
 .r-palco-resumo .r-palco-chao { margin: 0 -24px; }
 .r-palco-detalhe { padding: 28px 40px 0; }
 .r-palco-detalhe .r-palco-chao { margin: 0 -40px; }
+/* Fotos reais (com a ilustração como reserva em .r-foto-vazia) */
+.r-foto { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; background: #E9EDF2; border-radius: 12px; }
+.r-foto-vazia { display: flex; align-items: flex-end; padding: 8% 10% 6%; }
+.r-foto-mini { width: 72px; flex: none; border-radius: 8px; }
+.r-foto-mini.r-foto-vazia { padding: 6px; }
+.r-foto-credito { font-size: 11px; color: #667085; margin-top: 6px; overflow-wrap: anywhere; }
+.r-foto-credito a { color: inherit; }
 .r-swatch { width: 44px; height: 44px; border-radius: 50%; cursor: pointer; border: 3px solid #CBD2DC; padding: 0; }
 .r-swatch[aria-pressed="true"] { border-color: #0A6B5E; box-shadow: 0 0 0 3px var(--r-mint); }
 .r-bolinha { display: inline-block; width: 18px; height: 18px; border-radius: 50%; border: 1px solid #98A2B3; }
@@ -212,7 +219,11 @@ textarea.form-control { resize: vertical; }
 @keyframes drive { to { background-position: -56px 0; } }
 .dash { height: 4px; background: linear-gradient(90deg, #fff 28px, transparent 28px) 0 0 / 56px 4px repeat-x; animation: drive 1.2s linear infinite; }
 .r-carro { padding: 20px; gap: 16px; overflow: hidden; }
-.r-carro .r-palco { margin: -20px -20px 0; }
+.r-carro > .r-foto { margin: -20px -20px 0; width: calc(100% + 40px); max-width: none; border-radius: 0; }
+.r-hero-foto { position: relative; aspect-ratio: 16 / 10; border-radius: 14px; overflow: hidden; }
+.r-hero-foto .r-foto { position: absolute; inset: 0; height: 100%; border-radius: 0; opacity: 0; transition: opacity .6s ease; }
+.r-hero-foto .r-foto.ativa { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .r-hero-foto .r-foto { transition: none; } }
 
 /* ---------- Seleção de carro no pedido ---------- */
 .r-opcao {

@@ -34,7 +34,7 @@ node "Computador do cliente ou do agente\n<<navegador>>" as Navegador {
 }
 
 node "Servidor central\n<<JSON Server 0.17 - porta 3000>>" as Servidor {
-  component "Servidor estático\n(--static ./src)" as Estatico
+  component "Servidor estático\n(--static ./src,\nfotos em img/carros)" as Estatico
   component "API REST" as Rest
   interface "HTTP GET\nHTML/CSS/JS" as IStatic
   interface "REST /usuarios /clientes /agentes\n/automoveis /pedidos /contratos /creditos" as IRest
@@ -45,6 +45,13 @@ node "Servidor central\n<<JSON Server 0.17 - porta 3000>>" as Servidor {
   Rest -down-> DB
 }
 
+node "Wikipédia / Wikimedia Commons\n<<serviço externo>>" as Wiki {
+  component "MediaWiki API" as MediaWiki
+  interface "HTTPS /w/api.php\n(pageimages, imageinfo)" as IWiki
+  IWiki -down- MediaWiki
+}
+
 UI ..> IStatic : carrega
 Api ..> IRest : JSON
+Construcao ..> IWiki : busca foto\n(cadastro de automóvel)
 @enduml

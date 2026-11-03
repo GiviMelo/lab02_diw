@@ -1,7 +1,7 @@
 import { exigirPerfil } from '../auth.js';
 import { renderShell, esc, parametro, chipsHtml, ligarChips, mostrarErros, mensagensDe, irPara } from '../ui.js';
 import { obterAutomovel, salvarAutomovel, listarAgentes, listarClientes } from '../servicos.js';
-import { FORMAS, PALETA, carroSvg } from '../carros.js';
+import { FORMAS, PALETA, fotoCarro, creditoFoto, buscarFotoWikipedia } from '../carros.js';
 
 const sessao = exigirPerfil(['agente']);
 const conteudo = document.getElementById('conteudo');
@@ -13,7 +13,7 @@ let clientes = [];
 let carro;
 
 function renderPreview() {
-  $('preview-carro').innerHTML = carroSvg(carro.forma, carro.cor);
+  $('preview-carro').innerHTML = fotoCarro(carro) + creditoFoto(carro);
   $('preview-nome').textContent = `${carro.marca} ${carro.modelo}`.trim() || 'Novo automóvel';
 }
 
@@ -62,7 +62,7 @@ async function iniciar() {
     <a class="btn btn-outline-secondary r-voltar" href="automoveis.html">← Voltar aos automóveis</a>
     <header class="mb-4">
       <h1 class="r-h1">${id ? 'Editar automóvel' : 'Novo automóvel'}</h1>
-      <p class="r-sub">A ilustração muda conforme o tipo e a cor escolhidos.</p>
+      <p class="r-sub">Busque a foto do modelo na Wikipédia ou cole o endereço de uma imagem. Sem foto, aparece a ilustração no tipo e na cor escolhidos.</p>
     </header>
     <form class="row g-4 align-items-start" id="form" novalidate>
       <section class="col-12 col-xl-8">
@@ -73,6 +73,15 @@ async function iniciar() {
           ${campo('ano', 'Ano', 'type="number"')}
           ${campo('placa', 'Placa', 'placeholder="ABC1D23" maxlength="8"')}
           ${campo('matricula', 'Matrícula', 'placeholder="MAT-0000"')}
+        </div>
+        <div>
+          <label class="form-label" for="a-foto">Foto (endereço da imagem)</label>
+          <div class="input-group">
+            <input class="form-control" id="a-foto" type="url" placeholder="https://… ou img/carros/1.jpg" value="${esc(carro.foto)}">
+            <button class="btn btn-outline-secondary" type="button" id="buscar-foto">Buscar foto na Wikipédia</button>
+            <button class="btn btn-outline-danger" type="button" id="limpar-foto">Remover</button>
+          </div>
+          <div class="form-text" id="foto-status" aria-live="polite">A busca usa a marca e o modelo preenchidos acima.</div>
         </div>
         <div>
           <div class="r-label">Tipo de carroceria</div>
@@ -90,10 +99,7 @@ async function iniciar() {
         </div>
       </section>
       <aside class="col-12 col-xl-4"><div class="card card-body gap-3">
-        <div class="r-palco r-palco-resumo">
-          <div style="width: 85%; margin: 0 auto -2px" id="preview-carro"></div>
-          <div class="r-palco-chao"></div>
-        </div>
+        <div id="preview-carro"></div>
         <div style="font-size: 18px; font-weight: 800" id="preview-nome"></div>
         <div id="erros"></div>
         <button class="btn btn-primary" type="submit">Salvar automóvel</button>
@@ -107,6 +113,42 @@ async function iniciar() {
       renderPreview();
     })
   );
+  // Foto colada à mão: não sabemos autor/licença, então a legenda some.
+  const definirFoto = (dados) => {
+    carro.foto = dados.foto ?? '';
+    carro.fotoCredito = dados.fotoCredito ?? '';
+    carro.fotoFonte = dados.fotoFonte ?? '';
+    $('a-foto').value = carro.foto;
+    renderPreview();
+  };
+  $('a-foto').addEventListener('input', (e) => definirFoto({ foto: e.target.value.trim() }));
+  $('limpar-foto').addEventListener('click', () => {
+    definirFoto({});
+    $('foto-status').textContent = 'Foto removida: será usada a ilustração.';
+  });
+  $('buscar-foto').addEventListener('click', async () => {
+    const botao = $('buscar-foto');
+    const status = $('foto-status');
+    if (!carro.marca.trim() || !carro.modelo.trim()) {
+      status.textContent = 'Preencha marca e modelo antes de buscar.';
+      return;
+    }
+    botao.disabled = true;
+    status.textContent = `Buscando "${carro.marca} ${carro.modelo}" na Wikipédia…`;
+    try {
+      const achada = await buscarFotoWikipedia(carro.marca, carro.modelo);
+      if (achada) {
+        definirFoto(achada);
+        status.textContent = 'Foto encontrada. Confira a prévia ao lado antes de salvar.';
+      } else {
+        status.textContent = 'Nenhuma foto encontrada para esse modelo. Cole o endereço de uma imagem.';
+      }
+    } catch {
+      status.textContent = 'Não foi possível acessar a Wikipédia agora. Verifique a internet ou cole o endereço de uma imagem.';
+    } finally {
+      botao.disabled = false;
+    }
+  });
   ligarChips($('formas'), (v) => {
     carro.forma = v;
     renderPreview();

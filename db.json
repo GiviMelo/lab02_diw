@@ -110,9 +110,12 @@
       "modelo": "Argo",
       "placa": "ABC1D23",
       "forma": "hatch",
-      "cor": "#E8ECF1",
+      "cor": "#C0392B",
       "proprietarioTipo": "empresa",
-      "proprietarioId": 2
+      "proprietarioId": 2,
+      "foto": "img/carros/1.jpg",
+      "fotoCredito": "JasonVogel · CC BY-SA 4.0",
+      "fotoFonte": "https://commons.wikimedia.org/wiki/File:Fiat_Argo_2017b_(cropped).jpg"
     },
     {
       "id": 2,
@@ -122,9 +125,12 @@
       "modelo": "Polo",
       "placa": "DEF4G56",
       "forma": "hatch",
-      "cor": "#1F4FB5",
-      "proprietarioTipo": "banco",
-      "proprietarioId": 1
+      "cor": "#E8ECF1",
+      "proprietarioTipo": "empresa",
+      "proprietarioId": 2,
+      "foto": "img/carros/2.jpg",
+      "fotoCredito": "M 93 · CC BY-SA 3.0 de",
+      "fotoFonte": "https://commons.wikimedia.org/wiki/File:VW_Polo_beats_(VI)_%E2%80%93_f_03032019.jpg"
     },
     {
       "id": 3,
@@ -134,9 +140,12 @@
       "modelo": "Onix Plus",
       "placa": "GHI7J89",
       "forma": "sedan",
-      "cor": "#C0392B",
-      "proprietarioTipo": "empresa",
-      "proprietarioId": 2
+      "cor": "#3B4656",
+      "proprietarioTipo": "cliente",
+      "proprietarioId": 1,
+      "foto": "img/carros/3.jpg",
+      "fotoCredito": "Just a Man · CC BY 4.0",
+      "fotoFonte": "https://commons.wikimedia.org/wiki/File:2023_Chevrolet_Onix_Plus_1.0T_Premier_AT.jpg"
     },
     {
       "id": 4,
@@ -146,9 +155,12 @@
       "modelo": "HB20",
       "placa": "JKL0M12",
       "forma": "hatch",
-      "cor": "#F2A93B",
+      "cor": "#8A97A8",
       "proprietarioTipo": "banco",
-      "proprietarioId": 1
+      "proprietarioId": 1,
+      "foto": "img/carros/4.jpg",
+      "fotoCredito": "Just a Man · CC BY 4.0",
+      "fotoFonte": "https://commons.wikimedia.org/wiki/File:Hyundai_HB20_Comfort_Plus_2025.jpg"
     },
     {
       "id": 5,
@@ -158,9 +170,12 @@
       "modelo": "Corolla",
       "placa": "NOP3Q45",
       "forma": "sedan",
-      "cor": "#3B4656",
+      "cor": "#8A97A8",
       "proprietarioTipo": "cliente",
-      "proprietarioId": 2
+      "proprietarioId": 2,
+      "foto": "img/carros/5.jpg",
+      "fotoCredito": "LuvsMG481 · CC BY-SA 4.0",
+      "fotoFonte": "https://commons.wikimedia.org/wiki/File:2022_Toyota_Corolla_Altis_1.8G_Prestige_front.jpg"
     },
     {
       "id": 6,
@@ -170,9 +185,12 @@
       "modelo": "Renegade",
       "placa": "RST6U78",
       "forma": "suv",
-      "cor": "#2FB5A0",
-      "proprietarioTipo": "empresa",
-      "proprietarioId": 2
+      "cor": "#E8ECF1",
+      "proprietarioTipo": "cliente",
+      "proprietarioId": 1,
+      "foto": "img/carros/6.jpg",
+      "fotoCredito": "M 93 · CC BY-SA 3.0 de",
+      "fotoFonte": "https://commons.wikimedia.org/wiki/File:Jeep_Renegade_1.6_MultiJet_2WD_Longitude_%E2%80%93_Frontansicht,_9._November_2014,_D%C3%BCsseldorf.jpg"
     },
     {
       "id": 7,
@@ -182,9 +200,12 @@
       "modelo": "Strada",
       "placa": "VWX9Y01",
       "forma": "picape",
-      "cor": "#8A97A8",
+      "cor": "#3B4656",
       "proprietarioTipo": "empresa",
-      "proprietarioId": 2
+      "proprietarioId": 2,
+      "foto": "img/carros/7.jpg",
+      "fotoCredito": "NaBUru38 · CC BY-SA 4.0",
+      "fotoFonte": "https://commons.wikimedia.org/wiki/File:Fiat_Strada_2020_Volcano_in_Montevideo_(front).jpg"
     }
   ],
   "pedidos": [
@@ -209,12 +230,12 @@
     {
       "id": 2,
       "clienteId": 1,
-      "automovelId": 2,
+      "automovelId": 3,
       "dataInicio": "2026-11-12",
       "dataFim": "2026-11-19",
       "observacoes": "",
       "dataCriacao": "2026-10-28T13:00:00.000Z",
-      "status": "Aprovado financeiramente",
+      "status": "Contrato executado",
       "avaliacoes": [
         {
           "agenteId": 1,
@@ -235,8 +256,19 @@
           "autor": "Banco Mineiro",
           "acao": "Análise financeira aprovada",
           "detalhe": "Parecer: Renda compatível"
+        },
+        {
+          "data": "2026-11-03T12:20:33.262Z",
+          "autor": "Locadora Central",
+          "acao": "Pedido modificado pelo agente"
+        },
+        {
+          "data": "2026-11-03T12:20:36.061Z",
+          "autor": "Locadora Central",
+          "acao": "Contrato executado"
         }
-      ]
+      ],
+      "contratoId": 4
     },
     {
       "id": 3,
@@ -283,16 +315,95 @@
       "dataFim": "2026-11-06",
       "observacoes": "",
       "dataCriacao": "2026-11-01T18:36:43.436Z",
-      "status": "Em análise",
-      "avaliacoes": [],
+      "status": "Contrato executado",
+      "avaliacoes": [
+        {
+          "agenteId": 1,
+          "agenteNome": "Banco Mineiro",
+          "aprovado": true,
+          "parecer": "j m,  jnklnkln",
+          "data": "2026-11-01T21:55:46.555Z"
+        }
+      ],
       "historico": [
         {
           "data": "2026-11-01T18:36:43.436Z",
           "autor": "Maria Souza",
           "acao": "Pedido enviado"
+        },
+        {
+          "data": "2026-11-01T21:55:39.392Z",
+          "autor": "Banco Mineiro",
+          "acao": "Pedido modificado pelo agente"
+        },
+        {
+          "data": "2026-11-01T21:55:43.825Z",
+          "autor": "Banco Mineiro",
+          "acao": "Pedido modificado pelo agente"
+        },
+        {
+          "data": "2026-11-01T21:55:46.555Z",
+          "autor": "Banco Mineiro",
+          "acao": "Análise financeira aprovada",
+          "detalhe": "Parecer: j m,  jnklnkln"
+        },
+        {
+          "data": "2026-11-01T21:59:08.507Z",
+          "autor": "Banco Mineiro",
+          "acao": "Pedido modificado pelo agente"
+        },
+        {
+          "data": "2026-11-01T21:59:10.347Z",
+          "autor": "Banco Mineiro",
+          "acao": "Contrato executado",
+          "detalhe": "Crédito de R$ 30.000,00 em 48x de R$ 881,25"
         }
       ],
-      "id": 4
+      "id": 4,
+      "contratoId": 2
+    },
+    {
+      "clienteId": 1,
+      "automovelId": 2,
+      "dataInicio": "2026-11-02",
+      "dataFim": "2026-11-06",
+      "observacoes": "dadas",
+      "dataCriacao": "2026-11-01T22:00:30.807Z",
+      "status": "Contrato executado",
+      "avaliacoes": [
+        {
+          "agenteId": 1,
+          "agenteNome": "Banco Mineiro",
+          "aprovado": true,
+          "parecer": "cuzdsadsa",
+          "data": "2026-11-01T22:01:09.599Z"
+        }
+      ],
+      "historico": [
+        {
+          "data": "2026-11-01T22:00:30.807Z",
+          "autor": "Maria Souza",
+          "acao": "Pedido enviado"
+        },
+        {
+          "data": "2026-11-01T22:00:55.885Z",
+          "autor": "Banco Mineiro",
+          "acao": "Pedido modificado pelo agente"
+        },
+        {
+          "data": "2026-11-01T22:01:09.599Z",
+          "autor": "Banco Mineiro",
+          "acao": "Análise financeira aprovada",
+          "detalhe": "Parecer: cuzdsadsa"
+        },
+        {
+          "data": "2026-11-01T22:01:21.936Z",
+          "autor": "Banco Mineiro",
+          "acao": "Contrato executado"
+        }
+      ],
+      "id": 5,
+      "contratoId": 3
     }
   ],
   "contratos": [
@@ -303,7 +414,43 @@
       "tipoPropriedade": "empresa",
       "proprietarioId": 2,
       "dataExecucao": "2026-09-24T13:00:00.000Z"
+    },
+    {
+      "pedidoId": 4,
+      "agenteId": 1,
+      "tipoPropriedade": "cliente",
+      "proprietarioId": 1,
+      "creditoId": 1,
+      "dataExecucao": "2026-11-01T21:59:10.333Z",
+      "id": 2
+    },
+    {
+      "pedidoId": 5,
+      "agenteId": 1,
+      "tipoPropriedade": "empresa",
+      "proprietarioId": 2,
+      "dataExecucao": "2026-11-01T22:01:21.917Z",
+      "id": 3
+    },
+    {
+      "pedidoId": 2,
+      "agenteId": 2,
+      "tipoPropriedade": "cliente",
+      "proprietarioId": 1,
+      "dataExecucao": "2026-11-03T12:20:36.046Z",
+      "id": 4
     }
   ],
-  "creditos": []
+  "creditos": [
+    {
+      "bancoId": 1,
+      "pedidoId": 4,
+      "valor": 30000,
+      "parcelas": 48,
+      "taxaMensal": 1.5,
+      "valorParcela": 881.25,
+      "dataConcessao": "2026-11-01T21:59:10.324Z",
+      "id": 1
+    }
+  ]
 }
